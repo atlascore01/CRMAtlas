@@ -1,8 +1,18 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+// Asegurar fallback de NEXTAUTH_SECRET para producción
+if (!process.env.NEXTAUTH_SECRET) {
+  process.env.NEXTAUTH_SECRET = "atlascore-crm-production-secret-token-key-2026";
+}
+
+// Auto-detección de dominio en Vercel si NEXTAUTH_URL no fue cargada manualmente
+if (!process.env.NEXTAUTH_URL && process.env.VERCEL_URL) {
+  process.env.NEXTAUTH_URL = `https://${process.env.VERCEL_URL}`;
+}
+
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET || "una-clave-secreta-falsa-para-desarrollo-32145",
+  secret: process.env.NEXTAUTH_SECRET || "atlascore-crm-production-secret-token-key-2026",
   providers: [
     CredentialsProvider({
       name: "Credenciales Administrativas",
@@ -13,13 +23,16 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials) return null;
         
-        // Validación contra las credenciales estáticas especificadas
-        const isValid = 
-          credentials.username === 'atlascoreadm' && 
-          credentials.password === '4322S$S0HJ$:qj@';
+        const username = credentials.username?.trim().toLowerCase();
+        const password = credentials.password?.trim();
 
-        if (isValid) {
-          // Si es válido, retornamos el objeto del usuario simulado
+        // Validación: tolera tanto '4322S$S0HJ$:qj@' como '43`22S$S0HJ$:qj@' y espacios accidentales
+        const isUserValid = username === 'atlascoreadm';
+        const isPassValid = 
+          password === '4322S$S0HJ$:qj@' || 
+          password === '43`22S$S0HJ$:qj@';
+
+        if (isUserValid && isPassValid) {
           return { 
             id: "1", 
             name: "Atlas Admin", 
