@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   Phone, 
   Users, 
@@ -103,6 +104,11 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
   const [activeFilter, setActiveFilter] = useState<'TODOS' | NoteCategory>('TODOS');
   const [searchQuery, setSearchQuery] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Close on Escape key
   useEffect(() => {
@@ -408,13 +414,13 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
       {/* ========================================================================= */}
       {/* EXPANDED FULL-SCREEN IMMERSIVE READER MODAL (POSICION ELEVADA & MAX ESPACIO) */}
       {/* ========================================================================= */}
-      {isExpanded && (
+      {isExpanded && mounted && typeof document !== 'undefined' && createPortal(
         <div 
-          className="fixed inset-0 z-[100] flex items-start justify-center pt-1 sm:pt-1.5 md:pt-2 pb-1 sm:pb-2 px-1 sm:px-2 md:px-3 bg-[#001412]/92 backdrop-blur-2xl animate-fadeIn"
+          className="fixed inset-0 z-[9999] flex items-start justify-center pt-2 sm:pt-3 pb-2 sm:pb-3 px-2 sm:px-4 bg-[#001412]/92 backdrop-blur-2xl animate-fadeIn"
           onClick={() => setIsExpanded(false)}
         >
           <div 
-            className="w-full max-w-[99vw] 2xl:max-w-[1850px] h-[98vh] atlas-card rounded-2xl sm:rounded-3xl border border-[#909CC2]/25 shadow-2xl flex flex-col overflow-hidden relative"
+            className="w-full max-w-[99vw] 2xl:max-w-[1850px] h-[97vh] atlas-card rounded-2xl sm:rounded-3xl border border-[#909CC2]/25 shadow-2xl flex flex-col overflow-hidden relative"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Top glowing accent line */}
@@ -551,7 +557,8 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
