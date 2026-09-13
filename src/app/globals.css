@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  --background: #001412;
+  --foreground: #F0EBD8;
+  --atlas-obsidian: #001412;
+  --atlas-teal: #023A40;
+  --atlas-teal-light: #064E57;
+  --atlas-mint: #8BD990;
+  --atlas-mint-glow: rgba(139, 217, 144, 0.25);
+  --atlas-indigo: #4B4BA1;
+  --atlas-indigo-glow: rgba(75, 75, 161, 0.35);
+  --atlas-lavender: #909CC2;
+  --atlas-cream: #F0EBD8;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-brand: var(--font-chakra-petch);
+}
+
+body {
+  background-color: var(--atlas-obsidian);
+  color: var(--atlas-cream);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+.font-brand {
+  font-family: var(--font-chakra-petch), sans-serif;
+}
+
+/* Background Grids & Constellation Effects */
+.atlas-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(144, 156, 194, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(144, 156, 194, 0.05) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+.atlas-radial-glow {
+  background: radial-gradient(circle at 50% 20%, rgba(139, 217, 144, 0.08) 0%, rgba(75, 75, 161, 0.12) 45%, transparent 70%);
+}
+
+.atlas-card {
+  background: linear-gradient(180deg, rgba(2, 58, 64, 0.75) 0%, rgba(0, 20, 18, 0.85) 100%);
+  border: 1px solid rgba(144, 156, 194, 0.18);
+  backdrop-filter: blur(12px);
+}
+
+.atlas-card:hover {
+  border-color: rgba(139, 217, 144, 0.35);
+}
+
+.atlas-glow-mint {
+  box-shadow: 0 0 25px rgba(139, 217, 144, 0.2);
+}
+
+.atlas-glow-indigo {
+  box-shadow: 0 0 30px rgba(75, 75, 161, 0.3);
+}
+
+.atlas-gradient-text {
+  background: linear-gradient(135deg, #8BD990 0%, #909CC2 50%, #4B4BA1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.atlas-gradient-btn {
+  background: linear-gradient(135deg, #8BD990 0%, #064E57 100%);
+  color: #001412;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.atlas-gradient-btn:hover {
+  background: linear-gradient(135deg, #A2E5A6 0%, #08616B 100%);
+  box-shadow: 0 0 20px rgba(139, 217, 144, 0.35);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #001412;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #023A40;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8BD990;
+}
+
+/* Chrome/Edge/Safari Autofill styling override for dark mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #001c19 inset !important;
+  -webkit-text-fill-color: #F0EBD8 !important;
+  caret-color: #8BD990 !important;
+  border-color: #023A40 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
