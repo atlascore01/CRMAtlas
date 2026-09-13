@@ -172,16 +172,22 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
 
   // Reusable New Note Input Form
   const renderNewNoteForm = (isModal = false) => (
-    <div className={`bg-[#001c19]/90 border border-[#023A40] rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-lg ${isModal ? 'h-full flex flex-col justify-between' : ''}`}>
-      <div className="space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-          <span className="text-xs font-brand uppercase tracking-wider text-[#F0EBD8] font-semibold flex items-center gap-1.5">
-            <Plus size={14} className="text-[#8BD990]" />
-            <span>Nueva Entrada en Bitácora</span>
-          </span>
+    <div className={`bg-[#001c19]/90 border border-[#023A40] rounded-2xl p-5 sm:p-6 space-y-4 shadow-lg ${isModal ? 'h-full flex flex-col justify-between' : ''}`}>
+      <div className="space-y-4">
+        {/* Header & Category Instructions */}
+        <div className="space-y-2.5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <span className="text-xs font-brand uppercase tracking-wider text-[#F0EBD8] font-semibold flex items-center gap-2">
+              <Plus size={15} className="text-[#8BD990]" />
+              <span>Nueva Entrada en Bitácora</span>
+            </span>
+            <span className="text-[11px] text-[#909CC2]/70 font-light">
+              Selecciona el tipo de evento:
+            </span>
+          </div>
 
-          {/* Category Selector Chips */}
-          <div className="flex flex-wrap gap-1.5">
+          {/* Category Selector Buttons Grid - Organizado y Espacioso */}
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-0.5">
             {(Object.keys(CATEGORY_CONFIG) as NoteCategory[]).map((cat) => {
               const cfg = CATEGORY_CONFIG[cat];
               const Icon = cfg.icon;
@@ -191,13 +197,13 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-brand transition-all cursor-pointer ${
+                  className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-brand transition-all cursor-pointer border ${
                     isSelected
-                      ? `${cfg.badge} shadow-sm scale-105 border`
-                      : 'bg-[#001412] text-[#909CC2]/70 border border-[#023A40] hover:text-[#F0EBD8]'
+                      ? `${cfg.badge} shadow-md scale-[1.02] font-semibold`
+                      : 'bg-[#001412] text-[#909CC2] border-[#023A40] hover:border-[#8BD990]/40 hover:text-[#F0EBD8]'
                   }`}
                 >
-                  <Icon size={12} className={isSelected ? cfg.color : ''} />
+                  <Icon size={14} className={isSelected ? cfg.color : 'text-[#909CC2]'} />
                   <span>{cfg.label}</span>
                 </button>
               );
@@ -205,44 +211,46 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
           </div>
         </div>
 
-        {/* Text Input */}
-        <div className="space-y-2">
+        {/* Text Input Area */}
+        <div className="space-y-2.5">
           <textarea
             value={newText}
             onChange={(e) => setNewText(e.target.value)}
-            rows={isModal ? 6 : 3}
-            placeholder={`Registrar detalle de ${CATEGORY_CONFIG[selectedCategory].label.toLowerCase()}...`}
-            className="w-full bg-[#001412] border border-[#023A40] rounded-xl p-3 text-xs text-[#F0EBD8] placeholder-[#909CC2]/40 focus:outline-none focus:border-[#8BD990] focus:ring-1 focus:ring-[#8BD990] leading-relaxed resize-none"
+            rows={isModal ? 6 : 4}
+            placeholder={`Escribe aquí el resumen de la ${CATEGORY_CONFIG[selectedCategory].label.toLowerCase()} (acuerdos, comentarios, solicitudes)...`}
+            className="w-full bg-[#001412] border border-[#023A40] rounded-xl p-3.5 text-xs sm:text-sm text-[#F0EBD8] placeholder-[#909CC2]/40 focus:outline-none focus:border-[#8BD990] focus:ring-1 focus:ring-[#8BD990] leading-relaxed resize-none shadow-inner"
           />
 
-          {/* Quick Action Tags */}
-          <div className="flex flex-wrap items-center gap-1.5 pt-1">
-            <span className="text-[10px] uppercase font-brand text-[#909CC2]/60 mr-1 flex items-center gap-1">
-              <Sparkles size={11} className="text-[#8BD990]" />
-              Plantillas:
+          {/* Quick Action Tags Section - Ordenado en caja dedicada */}
+          <div className="p-3 rounded-xl bg-[#001412]/80 border border-[#023A40] space-y-2">
+            <span className="text-[10px] uppercase font-brand text-[#909CC2] font-semibold flex items-center gap-1.5">
+              <Sparkles size={12} className="text-[#8BD990]" />
+              Plantillas rápidas a un clic:
             </span>
-            {QUICK_TEMPLATES.map((tmpl, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => handleUseTemplate(tmpl)}
-                className="text-[11px] px-2 py-0.5 rounded-md bg-[#001412] border border-[#909CC2]/15 text-[#909CC2] hover:text-[#8BD990] hover:border-[#8BD990]/40 transition-colors cursor-pointer"
-              >
-                {tmpl.label}
-              </button>
-            ))}
+            <div className="flex flex-wrap items-center gap-2">
+              {QUICK_TEMPLATES.map((tmpl, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleUseTemplate(tmpl)}
+                  className="text-xs px-3 py-1.5 rounded-lg bg-[#001c19] border border-[#909CC2]/20 text-[#F0EBD8] hover:text-[#8BD990] hover:border-[#8BD990]/50 transition-all cursor-pointer font-light shadow-sm"
+                >
+                  {tmpl.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-end pt-2">
+      <div className="flex justify-end pt-1">
         <button
           type="button"
           onClick={() => handleAddNote()}
           disabled={!newText.trim()}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl atlas-gradient-btn text-xs font-semibold font-brand uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-md"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl atlas-gradient-btn text-xs font-semibold font-brand uppercase tracking-wider disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-lg hover:shadow-[#8BD990]/20 transition-all"
         >
-          <Plus size={14} />
+          <Plus size={15} />
           <span>Agregar a Bitácora</span>
         </button>
       </div>
