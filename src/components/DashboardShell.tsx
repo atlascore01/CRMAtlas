@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { 
@@ -17,7 +18,6 @@ import {
   Activity,
   UserCheck
 } from 'lucide-react';
-import { AtlascoreLogo } from './AtlascoreLogo';
 
 interface ShellProps {
   children: React.ReactNode;
@@ -49,8 +49,17 @@ export function DashboardShell({ children }: ShellProps) {
   return (
     <div className="min-h-screen bg-[#001412] text-[#F0EBD8] flex flex-col md:flex-row atlas-grid-pattern">
       {/* Mobile Top Navigation */}
-      <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#023A40]/80 backdrop-blur-md border-b border-[#909CC2]/15 sticky top-0 z-40">
-        <AtlascoreLogo variant="gradient" size="sm" />
+      <header className="md:hidden flex items-center justify-between px-4 py-2.5 bg-[#023A40]/80 backdrop-blur-md border-b border-[#909CC2]/15 sticky top-0 z-40">
+        <Link href="/dashboard" className="flex items-center">
+          <Image
+            src="/brand/atlascore_logo_dark.png"
+            alt="Atlascore Logo"
+            width={110}
+            height={85}
+            priority
+            className="w-24 h-auto drop-shadow-md"
+          />
+        </Link>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="p-2 rounded-lg bg-[#001412] border border-[#909CC2]/20 text-[#8BD990]"
@@ -68,16 +77,26 @@ export function DashboardShell({ children }: ShellProps) {
       >
         <div>
           {/* Brand Header */}
-          <div className="p-6 border-b border-[#909CC2]/15 flex items-center justify-between">
-            <Link href="/dashboard" className="group">
-              <AtlascoreLogo variant="gradient" size="md" />
-            </Link>
+          <div className="p-5 border-b border-[#909CC2]/15 flex flex-col items-center justify-center relative">
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="md:hidden p-1.5 text-[#909CC2] hover:text-white"
+              className="md:hidden absolute top-4 right-4 p-1.5 text-[#909CC2] hover:text-white"
             >
               <X size={18} />
             </button>
+            <Link href="/dashboard" className="group flex flex-col items-center">
+              <div className="relative flex flex-col items-center">
+                <div className="absolute -inset-3 rounded-full bg-radial from-[#8BD990]/20 via-[#4B4BA1]/15 to-transparent blur-xl opacity-70 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                <Image
+                  src="/brand/atlascore_logo_dark.png"
+                  alt="Atlascore Logo"
+                  width={160}
+                  height={123}
+                  priority
+                  className="relative w-36 h-auto drop-shadow-[0_6px_16px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            </Link>
           </div>
 
           {/* Slogan Pill Badge */}
