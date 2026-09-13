@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Loader2, CheckCircle2, AlertCircle, Save, Calendar, FileText, Layers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { ClientNotesTimeline } from '@/components/ClientNotesTimeline';
 
 interface Props {
   clientId: string;
@@ -21,6 +22,7 @@ export function CrmManager({
 }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [notesValue, setNotesValue] = useState<string>(initialNotes || '');
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -33,7 +35,7 @@ export function CrmManager({
       leadStatus: formData.get('leadStatus'),
       priorityLevel: formData.get('priorityLevel'),
       nextContactAt: formData.get('nextContactAt') || null,
-      notes: formData.get('notes'),
+      notes: notesValue,
     };
 
     try {
@@ -137,17 +139,15 @@ export function CrmManager({
         />
       </div>
 
-      <div className="space-y-1.5">
-        <label className="text-xs font-brand uppercase tracking-wider text-[#909CC2] flex items-center gap-1.5">
-          <FileText size={13} className="text-[#8BD990]" />
+      {/* Bitácora de Notas & Seguimiento */}
+      <div className="space-y-2 pt-2 border-t border-[#909CC2]/15">
+        <label className="text-xs font-brand uppercase tracking-wider text-[#F0EBD8] font-semibold flex items-center gap-2">
+          <FileText size={14} className="text-[#8BD990]" />
           <span>Bitácora de Notas & Seguimiento</span>
         </label>
-        <textarea
-          name="notes"
-          rows={6}
-          defaultValue={initialNotes || ''}
-          placeholder="Anota acuerdos de reuniones, llamadas, objeciones del cliente, montos de cotización o próximos pasos estratégicos..."
-          className="w-full bg-[#001412] border border-[#023A40] rounded-xl px-3 py-2.5 text-xs text-[#F0EBD8] focus:outline-none focus:border-[#8BD990] leading-relaxed"
+        <ClientNotesTimeline 
+          initialNotes={initialNotes}
+          onChange={(serialized) => setNotesValue(serialized)}
         />
       </div>
 
