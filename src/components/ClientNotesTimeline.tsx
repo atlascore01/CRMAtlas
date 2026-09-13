@@ -187,7 +187,7 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
           </div>
 
           {/* Category Selector Buttons Grid - Organizado y Espacioso */}
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 pt-0.5">
+          <div className={`grid ${isModal ? 'grid-cols-2 sm:grid-cols-3 xl:grid-cols-3 gap-2' : 'grid-cols-2 sm:grid-cols-5 gap-2.5'} pt-0.5`}>
             {(Object.keys(CATEGORY_CONFIG) as NoteCategory[]).map((cat) => {
               const cfg = CATEGORY_CONFIG[cat];
               const Icon = cfg.icon;
@@ -270,47 +270,57 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
           </p>
         </div>
       ) : (
-        filteredNotes.map((note, index) => {
-          const cfg = CATEGORY_CONFIG[note.category] || CATEGORY_CONFIG.NOTA;
-          const Icon = cfg.icon;
+        <div className={isModal ? "grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4" : "space-y-3"}>
+          {filteredNotes.map((note, index) => {
+            const cfg = CATEGORY_CONFIG[note.category] || CATEGORY_CONFIG.NOTA;
+            const Icon = cfg.icon;
 
-          return (
-            <div
-              key={note.id || index}
-              className={`group relative bg-[#001c19]/80 hover:bg-[#00221f] border border-[#023A40] hover:border-[#8BD990]/30 rounded-2xl p-4 transition-all shadow-md ${isModal ? 'p-5' : 'p-3.5'}`}
-            >
-              {/* Note Card Header */}
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md border text-[11px] font-brand font-medium tracking-wide ${cfg.badge}`}
-                  >
-                    <Icon size={12} className={cfg.color} />
-                    <span>{cfg.label}</span>
-                  </span>
+            return (
+              <div
+                key={note.id || index}
+                className={`group relative bg-[#001c19]/85 hover:bg-[#00221f] border border-[#023A40] hover:border-[#8BD990]/40 rounded-2xl transition-all shadow-md flex flex-col justify-between ${isModal ? 'p-5' : 'p-4'}`}
+              >
+                {/* Note Card Header */}
+                <div>
+                  <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-[#909CC2]/10">
+                    <div className="flex items-center gap-2.5">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-brand font-medium tracking-wide ${cfg.badge}`}
+                      >
+                        <Icon size={13} className={cfg.color} />
+                        <span>{cfg.label}</span>
+                      </span>
 
-                  <span className="text-[11px] text-[#909CC2]/75 font-mono">
-                    {formatDate(note.date)}
-                  </span>
+                      <span className="text-xs text-[#909CC2]/80 font-mono">
+                        {formatDate(note.date)}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteNote(note.id)}
+                      className="opacity-0 group-hover:opacity-100 text-[#909CC2]/50 hover:text-red-400 transition-opacity p-1.5 cursor-pointer rounded-lg hover:bg-red-950/40"
+                      title="Eliminar entrada"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+
+                  {/* Note Content */}
+                  <p className={`text-[#F0EBD8] leading-relaxed whitespace-pre-wrap pl-1 font-light ${isModal ? 'text-sm' : 'text-xs'}`}>
+                    {note.text}
+                  </p>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => handleDeleteNote(note.id)}
-                  className="opacity-0 group-hover:opacity-100 text-[#909CC2]/50 hover:text-red-400 transition-opacity p-1 cursor-pointer"
-                  title="Eliminar entrada"
-                >
-                  <Trash2 size={13} />
-                </button>
+                {isModal && note.author && (
+                  <div className="pt-3 mt-2 border-t border-[#909CC2]/10 flex items-center justify-between text-[11px] text-[#909CC2]/60">
+                    <span>Registrado por: <span className="text-[#8BD990]">{note.author}</span></span>
+                  </div>
+                )}
               </div>
-
-              {/* Note Content */}
-              <p className={`text-[#F0EBD8] leading-relaxed whitespace-pre-wrap pl-1 font-light ${isModal ? 'text-sm' : 'text-xs'}`}>
-                {note.text}
-              </p>
-            </div>
-          );
-        })
+            );
+          })}
+        </div>
       )}
     </div>
   );
@@ -318,8 +328,8 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
   return (
     <div className="space-y-4">
       {/* Action Bar with Expand / Fullscreen Button */}
-      <div className="flex items-center justify-between p-3 rounded-2xl bg-[#001c19]/90 border border-[#023A40]">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#001c19]/90 border border-[#023A40]">
+        <div className="flex items-center gap-2.5">
           <BookOpen size={16} className="text-[#8BD990]" />
           <span className="text-xs font-brand uppercase tracking-wider text-[#F0EBD8] font-semibold">
             Línea de Tiempo de Bitácora
@@ -333,7 +343,7 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
         <button
           type="button"
           onClick={() => setIsExpanded(true)}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#023A40]/90 hover:bg-[#023A40] border border-[#8BD990]/40 hover:border-[#8BD990] text-xs font-brand text-[#8BD990] transition-all cursor-pointer shadow-md group"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#023A40]/90 hover:bg-[#023A40] border border-[#8BD990]/40 hover:border-[#8BD990] text-xs font-brand text-[#8BD990] transition-all cursor-pointer shadow-md group"
           title="Abrir en pantalla general para lectura amplia"
         >
           <Maximize2 size={13} className="group-hover:scale-110 transition-transform text-[#8BD990]" />
@@ -396,56 +406,73 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
       {renderTimelineList(false)}
 
       {/* ========================================================================= */}
-      {/* EXPANDED FULL-SCREEN IMMERSIVE READER MODAL (NO DESPLIEGA HACIA ABAJO)  */}
+      {/* EXPANDED FULL-SCREEN IMMERSIVE READER MODAL (POSICION ELEVADA & MAX ESPACIO) */}
       {/* ========================================================================= */}
       {isExpanded && (
         <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-8 bg-[#001412]/90 backdrop-blur-2xl animate-fadeIn"
+          className="fixed inset-0 z-[100] flex items-start justify-center pt-1 sm:pt-1.5 md:pt-2 pb-1 sm:pb-2 px-1 sm:px-2 md:px-3 bg-[#001412]/92 backdrop-blur-2xl animate-fadeIn"
           onClick={() => setIsExpanded(false)}
         >
           <div 
-            className="w-full max-w-5xl h-[90vh] max-h-[950px] atlas-card rounded-3xl border border-[#909CC2]/25 shadow-2xl flex flex-col overflow-hidden relative"
+            className="w-full max-w-[99vw] 2xl:max-w-[1850px] h-[98vh] atlas-card rounded-2xl sm:rounded-3xl border border-[#909CC2]/25 shadow-2xl flex flex-col overflow-hidden relative"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Top glowing accent line */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#8BD990] to-transparent shadow-[0_0_12px_#8BD990]" />
 
             {/* Modal Header */}
-            <div className="p-4 sm:p-6 border-b border-[#909CC2]/15 flex items-center justify-between bg-[#001c19]/95">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#023A40] border border-[#8BD990]/40 flex items-center justify-center text-[#8BD990] shadow-md">
+            <div className="px-4 py-3 sm:px-5 sm:py-3.5 border-b border-[#909CC2]/15 flex items-center justify-between bg-[#001c19]/95 gap-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#023A40] border border-[#8BD990]/40 flex items-center justify-center text-[#8BD990] shadow-md shrink-0">
                   <BookOpen size={20} />
                 </div>
-                <div>
-                  <div className="flex items-center gap-2.5">
-                    <h2 className="text-base sm:text-xl font-brand font-semibold text-[#F0EBD8]">
-                      Bitácora de Seguimiento · Modo Lectura General
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2.5 flex-wrap">
+                    <h2 className="text-sm sm:text-lg font-brand font-semibold text-[#F0EBD8] truncate">
+                      Bitácora de Seguimiento · Vista Panorámica
                     </h2>
-                    <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-[#023A40] text-[#8BD990] border border-[#8BD990]/30 font-bold">
+                    <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-[#023A40] text-[#8BD990] border border-[#8BD990]/30 font-bold shrink-0">
                       {notes.length} notas
                     </span>
                   </div>
-                  <p className="text-xs text-[#909CC2] mt-0.5 font-light">
-                    Espacio expandido enfocado en lectura, revisión de acuerdos y registro comercial
+                  <p className="text-[11px] sm:text-xs text-[#909CC2] font-light truncate hidden sm:block">
+                    Espacio expandido para análisis profundo, lectura ágil y registro comercial en tiempo real
                   </p>
                 </div>
               </div>
 
+              {/* Quick Category Summary Ribbons - Aprovechando el espacio central */}
+              <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-xl bg-[#001412]/80 border border-[#023A40]/80">
+                <span className="text-[10px] font-brand uppercase tracking-wider text-[#909CC2]">Resumen:</span>
+                {(Object.keys(CATEGORY_CONFIG) as NoteCategory[]).map((cat) => {
+                  const count = notes.filter((n) => n.category === cat).length;
+                  if (count === 0) return null;
+                  const cfg = CATEGORY_CONFIG[cat];
+                  const Icon = cfg.icon;
+                  return (
+                    <span key={cat} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-brand ${cfg.badge}`}>
+                      <Icon size={11} className={cfg.color} />
+                      <span>{cfg.label}: {count}</span>
+                    </span>
+                  );
+                })}
+              </div>
+
               {/* Action Buttons: Contraer y Cerrar */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => setIsExpanded(false)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#023A40]/90 border border-[#8BD990]/40 text-xs text-[#8BD990] hover:bg-[#023A40] transition-all cursor-pointer font-brand"
+                  className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#023A40]/90 border border-[#8BD990]/40 text-xs text-[#8BD990] hover:bg-[#023A40] transition-all cursor-pointer font-brand shadow-sm"
                   title="Contraer y volver a la vista estándar"
                 >
                   <Minimize2 size={14} />
-                  <span className="hidden sm:inline font-semibold">Contraer Pantalla</span>
+                  <span className="hidden sm:inline font-semibold">Contraer</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsExpanded(false)}
-                  className="p-2 rounded-xl bg-[#001412] border border-[#909CC2]/20 text-[#909CC2] hover:text-white hover:border-red-400/40 transition-all cursor-pointer"
+                  className="p-1.5 sm:p-2 rounded-xl bg-[#001412] border border-[#909CC2]/20 text-[#909CC2] hover:text-white hover:border-red-400/40 transition-all cursor-pointer"
                   aria-label="Cerrar ventana"
                 >
                   <X size={18} />
@@ -453,14 +480,14 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
               </div>
             </div>
 
-            {/* Modal Body: Split into Left (New note) & Right (Expansive Reader Timeline) */}
+            {/* Modal Body: Split into Left (4/3 cols) & Right (8/9 cols) maximizing reading real estate */}
             <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
-              {/* Left Column: Form & Filters */}
-              <div className="lg:col-span-5 p-5 border-b lg:border-b-0 lg:border-r border-[#909CC2]/15 bg-[#001412]/70 overflow-y-auto flex flex-col justify-between gap-4">
+              {/* Left Column: Form & Search Filter (3 cols en xl para dar el 75% a la lectura) */}
+              <div className="lg:col-span-4 xl:col-span-3 p-4 sm:p-5 border-b lg:border-b-0 lg:border-r border-[#909CC2]/15 bg-[#001412]/75 overflow-y-auto flex flex-col justify-between gap-4">
                 <div className="space-y-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-brand uppercase tracking-wider text-[#909CC2] flex items-center gap-1.5">
-                      <Search size={12} className="text-[#8BD990]" />
+                      <Search size={13} className="text-[#8BD990]" />
                       <span>Buscar en las notas</span>
                     </label>
                     <input
@@ -468,7 +495,7 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Filtrar por palabra clave (ej. cotización, reunión)..."
-                      className="w-full bg-[#001c19] border border-[#023A40] rounded-xl px-3 py-2 text-xs text-[#F0EBD8] placeholder-[#909CC2]/40 focus:outline-none focus:border-[#8BD990]"
+                      className="w-full bg-[#001c19] border border-[#023A40] rounded-xl px-3.5 py-2.5 text-xs text-[#F0EBD8] placeholder-[#909CC2]/40 focus:outline-none focus:border-[#8BD990] focus:ring-1 focus:ring-[#8BD990]"
                     />
                   </div>
 
@@ -476,10 +503,10 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
                 </div>
               </div>
 
-              {/* Right Column: Expansive Reader Timeline */}
-              <div className="lg:col-span-7 p-5 sm:p-6 overflow-y-auto bg-[#001412]/40 flex flex-col">
+              {/* Right Column: Expansive Reader Timeline (8/9 cols) */}
+              <div className="lg:col-span-8 xl:col-span-9 p-4 sm:p-5 md:p-6 overflow-y-auto bg-[#001412]/40 flex flex-col space-y-4">
                 {/* Filter chips header inside modal */}
-                <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-[#909CC2]/10">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#909CC2]/10">
                   <span className="text-xs font-brand uppercase tracking-wider text-[#909CC2]">
                     Entradas Registradas ({filteredNotes.length})
                   </span>
@@ -488,7 +515,7 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
                     <button
                       type="button"
                       onClick={() => setActiveFilter('TODOS')}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-brand transition-colors cursor-pointer ${
+                      className={`px-3 py-1 rounded-lg text-xs font-brand transition-colors cursor-pointer ${
                         activeFilter === 'TODOS'
                           ? 'bg-[#8BD990]/20 text-[#8BD990] border border-[#8BD990]/40 font-semibold'
                           : 'text-[#909CC2] hover:text-white bg-[#001412]'
@@ -504,7 +531,7 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
                           key={cat}
                           type="button"
                           onClick={() => setActiveFilter(cat)}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-brand transition-colors cursor-pointer ${
+                          className={`px-3 py-1 rounded-lg text-xs font-brand transition-colors cursor-pointer ${
                             activeFilter === cat
                               ? 'bg-[#8BD990]/20 text-[#8BD990] border border-[#8BD990]/40 font-semibold'
                               : 'text-[#909CC2] hover:text-white bg-[#001412]'
