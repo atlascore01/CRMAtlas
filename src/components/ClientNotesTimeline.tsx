@@ -17,7 +17,11 @@ import {
   Minimize2,
   X,
   Search,
-  BookOpen
+  BookOpen,
+  Columns,
+  Square,
+  PanelLeftClose,
+  PanelLeftOpen
 } from 'lucide-react';
 
 export type NoteCategory = 'LLAMADA' | 'REUNION' | 'WHATSAPP' | 'COTIZACION' | 'NOTA';
@@ -105,6 +109,8 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [viewColumns, setViewColumns] = useState<'single' | 'double'>('single');
+  const [showModalForm, setShowModalForm] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -265,18 +271,18 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
 
   // Reusable Timeline List
   const renderTimelineList = (isModal = false) => (
-    <div className={`space-y-3 ${isModal ? 'overflow-y-auto pr-2' : 'max-h-[380px] overflow-y-auto pr-1'}`}>
+    <div className={`space-y-4 ${isModal ? 'overflow-y-auto pr-1 pb-6 w-full' : 'max-h-[380px] overflow-y-auto pr-1'}`}>
       {filteredNotes.length === 0 ? (
-        <div className="text-center py-10 px-4 rounded-2xl border border-dashed border-[#023A40] bg-[#001412]/40">
-          <Clock size={26} className="mx-auto text-[#909CC2]/40 mb-2" />
-          <p className="text-xs text-[#909CC2] font-light">
+        <div className="text-center py-12 px-4 rounded-2xl border border-dashed border-[#023A40] bg-[#001412]/40">
+          <Clock size={28} className="mx-auto text-[#909CC2]/40 mb-2.5" />
+          <p className="text-xs sm:text-sm text-[#909CC2] font-light">
             {notes.length === 0
               ? 'No hay notas registradas todavía. Usa la caja para registrar la primera interacción.'
               : 'No se encontraron notas con el filtro o búsqueda actual.'}
           </p>
         </div>
       ) : (
-        <div className={isModal ? "grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4" : "space-y-3"}>
+        <div className={isModal ? (viewColumns === 'double' && filteredNotes.length > 1 ? "grid grid-cols-1 xl:grid-cols-2 gap-4 w-full" : "space-y-4 w-full") : "space-y-3"}>
           {filteredNotes.map((note, index) => {
             const cfg = CATEGORY_CONFIG[note.category] || CATEGORY_CONFIG.NOTA;
             const Icon = cfg.icon;
@@ -284,16 +290,16 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
             return (
               <div
                 key={note.id || index}
-                className={`group relative bg-[#001c19]/85 hover:bg-[#00221f] border border-[#023A40] hover:border-[#8BD990]/40 rounded-2xl transition-all shadow-md flex flex-col justify-between ${isModal ? 'p-5' : 'p-4'}`}
+                className={`group relative bg-[#001c19]/90 hover:bg-[#00221f] border border-[#023A40] hover:border-[#8BD990]/40 rounded-2xl transition-all shadow-md flex flex-col justify-between w-full ${isModal ? 'p-6 sm:p-7' : 'p-4'}`}
               >
                 {/* Note Card Header */}
                 <div>
-                  <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-[#909CC2]/10">
-                    <div className="flex items-center gap-2.5">
+                  <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-[#909CC2]/10">
+                    <div className="flex items-center gap-3">
                       <span
                         className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-brand font-medium tracking-wide ${cfg.badge}`}
                       >
-                        <Icon size={13} className={cfg.color} />
+                        <Icon size={14} className={cfg.color} />
                         <span>{cfg.label}</span>
                       </span>
 
@@ -308,19 +314,19 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
                       className="opacity-0 group-hover:opacity-100 text-[#909CC2]/50 hover:text-red-400 transition-opacity p-1.5 cursor-pointer rounded-lg hover:bg-red-950/40"
                       title="Eliminar entrada"
                     >
-                      <Trash2 size={14} />
+                      <Trash2 size={15} />
                     </button>
                   </div>
 
                   {/* Note Content */}
-                  <p className={`text-[#F0EBD8] leading-relaxed whitespace-pre-wrap pl-1 font-light ${isModal ? 'text-sm' : 'text-xs'}`}>
+                  <p className={`text-[#F0EBD8] leading-relaxed whitespace-pre-wrap pl-1 font-light ${isModal ? 'text-sm sm:text-base leading-7' : 'text-xs'}`}>
                     {note.text}
                   </p>
                 </div>
 
                 {isModal && note.author && (
-                  <div className="pt-3 mt-2 border-t border-[#909CC2]/10 flex items-center justify-between text-[11px] text-[#909CC2]/60">
-                    <span>Registrado por: <span className="text-[#8BD990]">{note.author}</span></span>
+                  <div className="pt-3 mt-4 border-t border-[#909CC2]/10 flex items-center justify-between text-xs text-[#909CC2]/60">
+                    <span>Registrado por: <span className="text-[#8BD990] font-medium">{note.author}</span></span>
                   </div>
                 )}
               </div>
@@ -486,72 +492,118 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
               </div>
             </div>
 
-            {/* Modal Body: Split into Left (4/3 cols) & Right (8/9 cols) maximizing reading real estate */}
+            {/* Modal Body: Split into Left & Right maximizing reading real estate */}
             <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
-              {/* Left Column: Form & Search Filter (3 cols en xl para dar el 75% a la lectura) */}
-              <div className="lg:col-span-4 xl:col-span-3 p-4 sm:p-5 border-b lg:border-b-0 lg:border-r border-[#909CC2]/15 bg-[#001412]/75 overflow-y-auto flex flex-col justify-between gap-4">
-                <div className="space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-brand uppercase tracking-wider text-[#909CC2] flex items-center gap-1.5">
-                      <Search size={13} className="text-[#8BD990]" />
-                      <span>Buscar en las notas</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Filtrar por palabra clave (ej. cotización, reunión)..."
-                      className="w-full bg-[#001c19] border border-[#023A40] rounded-xl px-3.5 py-2.5 text-xs text-[#F0EBD8] placeholder-[#909CC2]/40 focus:outline-none focus:border-[#8BD990] focus:ring-1 focus:ring-[#8BD990]"
-                    />
+              {/* Left Column: Form & Search Filter (3 cols en xl cuando visible, u oculta) */}
+              {showModalForm && (
+                <div className="lg:col-span-4 xl:col-span-3 p-4 sm:p-5 border-b lg:border-b-0 lg:border-r border-[#909CC2]/15 bg-[#001412]/75 overflow-y-auto flex flex-col justify-between gap-4">
+                  <div className="space-y-4">
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-brand uppercase tracking-wider text-[#909CC2] flex items-center gap-1.5">
+                        <Search size={13} className="text-[#8BD990]" />
+                        <span>Buscar en las notas</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Filtrar por palabra clave (ej. cotización, reunión)..."
+                        className="w-full bg-[#001c19] border border-[#023A40] rounded-xl px-3.5 py-2.5 text-xs text-[#F0EBD8] placeholder-[#909CC2]/40 focus:outline-none focus:border-[#8BD990] focus:ring-1 focus:ring-[#8BD990]"
+                      />
+                    </div>
+
+                    {renderNewNoteForm(true)}
+                  </div>
+                </div>
+              )}
+
+              {/* Right Column: Expansive Reader Timeline (toma 9 cols si hay formulario, o 12 cols completos si se oculta) */}
+              <div className={`${showModalForm ? 'lg:col-span-8 xl:col-span-9' : 'lg:col-span-12 xl:col-span-12'} p-4 sm:p-5 md:p-6 lg:p-7 overflow-y-auto bg-[#001412]/40 flex flex-col space-y-4`}>
+                {/* Filter chips header inside modal */}
+                <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#909CC2]/10">
+                  <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+                    <span className="text-xs font-brand uppercase tracking-wider text-[#909CC2] font-semibold">
+                      Entradas Registradas ({filteredNotes.length})
+                    </span>
+
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setActiveFilter('TODOS')}
+                        className={`px-3 py-1 rounded-lg text-xs font-brand transition-colors cursor-pointer ${
+                          activeFilter === 'TODOS'
+                            ? 'bg-[#8BD990]/20 text-[#8BD990] border border-[#8BD990]/40 font-semibold'
+                            : 'text-[#909CC2] hover:text-white bg-[#001412]'
+                        }`}
+                      >
+                        Todos
+                      </button>
+                      {(Object.keys(CATEGORY_CONFIG) as NoteCategory[]).map((cat) => {
+                        const count = notes.filter((n) => n.category === cat).length;
+                        if (count === 0) return null;
+                        return (
+                          <button
+                            key={cat}
+                            type="button"
+                            onClick={() => setActiveFilter(cat)}
+                            className={`px-3 py-1 rounded-lg text-xs font-brand transition-colors cursor-pointer ${
+                              activeFilter === cat
+                                ? 'bg-[#8BD990]/20 text-[#8BD990] border border-[#8BD990]/40 font-semibold'
+                                : 'text-[#909CC2] hover:text-white bg-[#001412]'
+                            }`}
+                          >
+                            {CATEGORY_CONFIG[cat].label} ({count})
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
-                  {renderNewNoteForm(true)}
-                </div>
-              </div>
-
-              {/* Right Column: Expansive Reader Timeline (8/9 cols) */}
-              <div className="lg:col-span-8 xl:col-span-9 p-4 sm:p-5 md:p-6 overflow-y-auto bg-[#001412]/40 flex flex-col space-y-4">
-                {/* Filter chips header inside modal */}
-                <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#909CC2]/10">
-                  <span className="text-xs font-brand uppercase tracking-wider text-[#909CC2]">
-                    Entradas Registradas ({filteredNotes.length})
-                  </span>
-
-                  <div className="flex flex-wrap items-center gap-1.5">
+                  {/* View Controls: Toggle Form panel and Toggle 1 Col vs 2 Cols */}
+                  <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => setActiveFilter('TODOS')}
-                      className={`px-3 py-1 rounded-lg text-xs font-brand transition-colors cursor-pointer ${
-                        activeFilter === 'TODOS'
-                          ? 'bg-[#8BD990]/20 text-[#8BD990] border border-[#8BD990]/40 font-semibold'
-                          : 'text-[#909CC2] hover:text-white bg-[#001412]'
-                      }`}
+                      onClick={() => setShowModalForm(!showModalForm)}
+                      className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#001412] hover:bg-[#023A40] border border-[#023A40] hover:border-[#8BD990]/40 text-xs font-brand text-[#909CC2] hover:text-[#8BD990] transition-all cursor-pointer"
+                      title={showModalForm ? 'Ocultar panel de registro para máxima lectura' : 'Mostrar panel de registro'}
                     >
-                      Todos
+                      {showModalForm ? <PanelLeftClose size={13} /> : <PanelLeftOpen size={13} />}
+                      <span>{showModalForm ? 'Ocultar Registro' : 'Mostrar Registro'}</span>
                     </button>
-                    {(Object.keys(CATEGORY_CONFIG) as NoteCategory[]).map((cat) => {
-                      const count = notes.filter((n) => n.category === cat).length;
-                      if (count === 0) return null;
-                      return (
+
+                    {filteredNotes.length > 1 && (
+                      <div className="flex items-center p-0.5 rounded-lg bg-[#001412] border border-[#023A40]">
                         <button
-                          key={cat}
                           type="button"
-                          onClick={() => setActiveFilter(cat)}
-                          className={`px-3 py-1 rounded-lg text-xs font-brand transition-colors cursor-pointer ${
-                            activeFilter === cat
-                              ? 'bg-[#8BD990]/20 text-[#8BD990] border border-[#8BD990]/40 font-semibold'
-                              : 'text-[#909CC2] hover:text-white bg-[#001412]'
+                          onClick={() => setViewColumns('single')}
+                          className={`p-1.5 rounded-md text-xs transition-colors cursor-pointer ${
+                            viewColumns === 'single'
+                              ? 'bg-[#023A40] text-[#8BD990]'
+                              : 'text-[#909CC2] hover:text-white'
                           }`}
+                          title="Vista de 1 columna completa"
                         >
-                          {CATEGORY_CONFIG[cat].label} ({count})
+                          <Square size={13} />
                         </button>
-                      );
-                    })}
+                        <button
+                          type="button"
+                          onClick={() => setViewColumns('double')}
+                          className={`p-1.5 rounded-md text-xs transition-colors cursor-pointer ${
+                            viewColumns === 'double'
+                              ? 'bg-[#023A40] text-[#8BD990]'
+                              : 'text-[#909CC2] hover:text-white'
+                          }`}
+                          title="Vista de 2 columnas"
+                        >
+                          <Columns size={13} />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* The Timeline in Reader Mode */}
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                   {renderTimelineList(true)}
                 </div>
               </div>
