@@ -146,6 +146,7 @@ export function CrmManager({
           <span>Bitácora de Notas & Seguimiento</span>
         </label>
         <ClientNotesTimeline 
+          clientId={clientId}
           initialNotes={initialNotes}
           onChange={(serialized) => setNotesValue(serialized)}
         />

@@ -6,19 +6,15 @@ import { useRouter } from 'next/navigation';
 import { 
   Plus, 
   Search, 
-  Filter, 
   Building2, 
-  Phone, 
-  Mail, 
-  Calendar, 
   Clock, 
   ArrowUpRight, 
   X, 
   Loader2, 
-  Sparkles,
-  CheckCircle2,
-  Tag,
-  AlertCircle
+  CheckCircle2, 
+  AlertCircle,
+  Trash2,
+  AlertTriangle
 } from 'lucide-react';
 
 interface Client {
@@ -46,10 +42,39 @@ export function ClientsManagerView({ initialClients }: Props) {
   const [selectedPriority, setSelectedPriority] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
 
-  // Modal State
+  // Modal State for New Client
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
+
+  // Delete Client State
+  const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
+  const [isDeletingClient, setIsDeletingClient] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
+
+  const handleConfirmDelete = async () => {
+    if (!clientToDelete) return;
+    setIsDeletingClient(true);
+    setDeleteError('');
+
+    try {
+      const res = await fetch(`/api/clients/${clientToDelete.id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) {
+        throw new Error('Error al eliminar cliente');
+      }
+
+      setClients((prev) => prev.filter((c) => c.id !== clientToDelete.id));
+      setClientToDelete(null);
+      router.refresh();
+    } catch (err: unknown) {
+      setDeleteError(err instanceof Error ? err.message : 'No se pudo eliminar el cliente.');
+    } finally {
+      setIsDeletingClient(false);
+    }
+  };
 
   // Extract unique industries from clients
   const availableIndustries = Array.from(
@@ -105,8 +130,8 @@ export function ClientsManagerView({ initialClients }: Props) {
       setClients([created, ...clients]);
       setIsModalOpen(false);
       router.refresh();
-    } catch (err: any) {
-      setFormError(err.message || 'No se pudo guardar el cliente.');
+    } catch (err: unknown) {
+      setFormError(err instanceof Error ? err.message : 'No se pudo guardar el cliente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -291,13 +316,23 @@ export function ClientsManagerView({ initialClients }: Props) {
 
                     {/* Actions */}
                     <td className="p-4 pr-6 text-right">
-                      <Link
-                        href={`/dashboard/clients/${client.id}`}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#023A40] hover:bg-[#8BD990] text-[#8BD990] hover:text-[#001412] text-xs font-brand tracking-wider uppercase font-semibold transition-all"
-                      >
-                        <span>Gestionar</span>
-                        <ArrowUpRight size={14} />
-                      </Link>
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          href={`/dashboard/clients/${client.id}`}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#023A40] hover:bg-[#8BD990] text-[#8BD990] hover:text-[#001412] text-xs font-brand tracking-wider uppercase font-semibold transition-all"
+                        >
+                          <span>Gestionar</span>
+                          <ArrowUpRight size={14} />
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => setClientToDelete(client)}
+                          className="p-1.5 rounded-lg text-[#909CC2]/60 hover:text-red-400 hover:bg-red-950/40 border border-transparent hover:border-red-500/30 transition-all cursor-pointer"
+                          title="Eliminar cliente o lead"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -523,6 +558,76 @@ export function ClientsManagerView({ initialClients }: Props) {
           </div>
         </div>
       )}
+
+      {/* Modal: Confirmar Eliminación de Cliente */}
+      {clientToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#001412]/85 backdrop-blur-md animate-fadeIn">
+          <div className="atlas-card w-full max-w-md rounded-2xl border border-red-500/40 shadow-2xl p-6 relative">
+            <div className="flex items-start justify-between pb-3 border-b border-[#909CC2]/15 mb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-red-950/60 border border-red-500/40 flex items-center justify-center text-red-400 shrink-0">
+                  <AlertTriangle size={18} />
+                </div>
+                <div>
+                  <h3 className="text-base font-brand font-bold text-[#F0EBD8]">
+                    ¿Eliminar Cliente o Lead?
+                  </h3>
+                  <p className="text-xs text-[#909CC2]">
+                    Esta acción es definitiva e irreversible.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => !isDeletingClient && setClientToDelete(null)}
+                className="p-1 rounded-lg text-[#909CC2] hover:text-white"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {deleteError && (
+              <div className="mb-4 p-3 rounded-xl bg-red-950/50 border border-red-500/40 text-red-200 text-xs">
+                {deleteError}
+              </div>
+            )}
+
+            <p className="text-xs sm:text-sm text-[#F0EBD8]/90 leading-relaxed mb-6 font-light">
+              Estás por eliminar permanentemente a <strong className="text-white font-semibold font-brand">{clientToDelete.name || 'este cliente'}</strong> ({clientToDelete.company || 'Sin Empresa'}). Se borrarán todos sus registros comerciales y notas asociadas.
+            </p>
+
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#909CC2]/10">
+              <button
+                type="button"
+                disabled={isDeletingClient}
+                onClick={() => setClientToDelete(null)}
+                className="px-4 py-2 rounded-xl text-xs font-brand text-[#909CC2] hover:text-white hover:bg-[#023A40] transition-colors cursor-pointer disabled:opacity-50"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                disabled={isDeletingClient}
+                onClick={handleConfirmDelete}
+                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-brand font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-lg transition-all cursor-pointer disabled:opacity-50"
+              >
+                {isDeletingClient ? (
+                  <>
+                    <Loader2 size={15} className="animate-spin" />
+                    <span>Eliminando...</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={15} />
+                    <span>Confirmar Eliminación</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

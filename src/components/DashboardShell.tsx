@@ -4,19 +4,15 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { 
   LayoutDashboard, 
   Users, 
-  Layers, 
   LogOut, 
   Menu, 
   X, 
   Sparkles, 
-  ChevronRight,
-  Shield,
-  Activity,
-  UserCheck
+  Activity 
 } from 'lucide-react';
 
 interface ShellProps {
@@ -26,6 +22,17 @@ interface ShellProps {
 export function DashboardShell({ children }: ShellProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session } = useSession();
+
+  const currentUserName = session?.user?.name || (session?.user as { username?: string })?.username || 'Atlascore Admin';
+  const userInitials = currentUserName
+    ? currentUserName
+        .split(' ')
+        .map((p: string) => p[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase()
+    : 'AC';
 
   const navItems = [
     {
@@ -153,15 +160,15 @@ export function DashboardShell({ children }: ShellProps) {
         <div className="p-4 border-t border-[#909CC2]/15 bg-[#001412]/50">
           <div className="flex items-center gap-3 p-2.5 rounded-xl bg-[#023A40]/40 border border-[#909CC2]/10 mb-3">
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#8BD990] to-[#4B4BA1] flex items-center justify-center font-brand font-bold text-[#001412] text-sm shrink-0">
-              AC
+              {userInitials}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-semibold text-[#F0EBD8] truncate font-brand">
-                Atlascore Admin
+              <p className="text-xs font-semibold text-[#F0EBD8] truncate font-brand" title={currentUserName}>
+                {currentUserName}
               </p>
               <div className="flex items-center gap-1.5 text-[10px] text-[#8BD990]">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#8BD990] animate-pulse" />
-                <span>En Línea</span>
+                <span>En Línea · Admin</span>
               </div>
             </div>
           </div>

@@ -11,6 +11,45 @@ if (!process.env.NEXTAUTH_URL && process.env.VERCEL_URL) {
   process.env.NEXTAUTH_URL = `https://${process.env.VERCEL_URL}`;
 }
 
+// Configuración de usuarios y credenciales administrativas
+const USERS_CREDENTIALS: Record<string, { pass: string; name: string; email: string }> = {
+  atlascoreadm: {
+    pass: '4322S$S0HJ$:qj@',
+    name: 'Atlas Admin',
+    email: 'admin@atlascore.com',
+  },
+  nfrance: {
+    pass: 'Nf8#mK9!vP2$',
+    name: 'N. France',
+    email: 'nfrance@atlascore.com',
+  },
+  estuyck: {
+    pass: 'Es4@wT7*zL1^',
+    name: 'E. Stuyck',
+    email: 'estuyck@atlascore.com',
+  },
+  amelian: {
+    pass: 'Am9$rX2!bQ8#',
+    name: 'A. Melian',
+    email: 'amelian@atlascore.com',
+  },
+  narcos: {
+    pass: 'Na3*vY6&cM9@',
+    name: 'N. Arcos',
+    email: 'narcos@atlascore.com',
+  },
+  gbustos: {
+    pass: 'Gb7!tZ4$pW2*',
+    name: 'G. Bustos',
+    email: 'gbustos@atlascore.com',
+  },
+  aquevedo: {
+    pass: 'Aq5#sN8%kR3!',
+    name: 'A. Quevedo',
+    email: 'aquevedo@atlascore.com',
+  },
+};
+
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET || "atlascore-crm-production-secret-token-key-2026",
   providers: [
@@ -26,22 +65,25 @@ export const authOptions: NextAuthOptions = {
         const username = credentials.username?.trim().toLowerCase();
         const password = credentials.password?.trim();
 
-        // Validación: tolera tanto '4322S$S0HJ$:qj@' como '43`22S$S0HJ$:qj@' y espacios accidentales
-        const isUserValid = username === 'atlascoreadm';
-        const isPassValid = 
-          password === '4322S$S0HJ$:qj@' || 
-          password === '43`22S$S0HJ$:qj@';
+        if (!username || !password) return null;
 
-        if (isUserValid && isPassValid) {
+        const userAccount = USERS_CREDENTIALS[username];
+        if (!userAccount) return null;
+
+        // Validación de contraseña (tolera tildes invertidas accidentales en pass histórica de atlascoreadm)
+        const isPassValid = 
+          password === userAccount.pass || 
+          (username === 'atlascoreadm' && password === '43`22S$S0HJ$:qj@');
+
+        if (isPassValid) {
           return { 
-            id: "1", 
-            name: "Atlas Admin", 
-            email: "admin@atlascore.com", 
+            id: username, 
+            name: userAccount.name, 
+            email: userAccount.email, 
             role: "ADMIN" 
           };
         }
         
-        // Si no coincide, retornamos null (login fallido)
         return null;
       }
     })
@@ -49,13 +91,19 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = (user as any).role;
+        const u = user as { role?: string; username?: string; name?: string | null; id?: string };
+        token.role = u.role;
+        token.username = user.id;
+        token.name = user.name;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).role = token.role;
+        const sUser = session.user as { role?: unknown; username?: unknown; name?: string | null };
+        sUser.role = token.role;
+        sUser.username = token.username;
+        session.user.name = token.name as string;
       }
       return session;
     }
@@ -67,3 +115,4 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   }
 };
+

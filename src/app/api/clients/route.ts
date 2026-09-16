@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(newClient);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating client:', error);
     return NextResponse.json({ error: 'Error al crear cliente' }, { status: 500 });
   }

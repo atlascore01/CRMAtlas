@@ -3,8 +3,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-async function isAdmin(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+async function isAdmin(_req: NextRequest) {
+  const _session = await getServerSession(authOptions);
   return true; // Simplificado para que puedas probar el panel sin login complejo
 }
 
@@ -60,7 +60,7 @@ export async function PATCH(
     const body = await req.json();
     
     // Filtramos los campos que se pueden actualizar
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     const allowedFields = [
       'name', 'email', 'phone', 'company', 'industry', 
       'clientRole', 'location', 'leadStatus', 'priorityLevel', 
@@ -88,3 +88,31 @@ export async function PATCH(
     return NextResponse.json({ error: 'Error al actualizar cliente' }, { status: 500 });
   }
 }
+
+// DELETE /api/clients/[id]
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  if (!(await isAdmin(req))) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  try {
+    // Eliminar cuentas y sesiones asociadas si existieran
+    await prisma.account.deleteMany({ where: { userId: id } });
+    await prisma.session.deleteMany({ where: { userId: id } });
+
+    await prisma.user.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true, message: 'Cliente o Lead eliminado con éxito' });
+  } catch (error) {
+    console.error('Error deleting client:', error);
+    return NextResponse.json({ error: 'Error al eliminar el cliente de la base de datos' }, { status: 500 });
+  }
+}
+

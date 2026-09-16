@@ -8,11 +8,10 @@ import {
   Phone, 
   MapPin, 
   Briefcase, 
-  Calendar,
-  Sparkles,
-  UserCheck
+  Sparkles 
 } from 'lucide-react';
 import { CrmManager } from './CrmManager';
+import { DeleteClientButton } from '@/components/DeleteClientButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,7 +32,7 @@ export default async function ClientDetailPage({
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Navigation and Actions */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <Link
           href="/dashboard/clients"
           className="inline-flex items-center gap-2 text-xs font-brand uppercase tracking-wider text-[#909CC2] hover:text-[#8BD990] transition-colors"
@@ -42,9 +41,16 @@ export default async function ClientDetailPage({
           <span>Volver al Directorio</span>
         </Link>
 
-        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-[#023A40] border border-[#8BD990]/30 text-xs font-brand text-[#8BD990]">
-          <Sparkles size={13} />
-          <span>Gestión CRM Activa</span>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#023A40] border border-[#8BD990]/30 text-xs font-brand text-[#8BD990]">
+            <Sparkles size={13} />
+            <span>Gestión CRM Activa</span>
+          </div>
+
+          <DeleteClientButton 
+            clientId={client.id} 
+            clientName={client.name || 'Cliente'} 
+          />
         </div>
       </div>
 

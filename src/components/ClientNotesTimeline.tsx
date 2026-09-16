@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useSession } from 'next-auth/react';
 import { 
   Phone, 
   Users, 
@@ -21,7 +22,13 @@ import {
   Columns,
   Square,
   PanelLeftClose,
-  PanelLeftOpen
+  PanelLeftOpen,
+  Pencil,
+  Check,
+  UserCheck,
+  AlertTriangle,
+  CheckCircle2,
+  History
 } from 'lucide-react';
 
 export type NoteCategory = 'LLAMADA' | 'REUNION' | 'WHATSAPP' | 'COTIZACION' | 'NOTA';
@@ -32,9 +39,13 @@ export interface NoteEntry {
   category: NoteCategory;
   text: string;
   author?: string;
+  createdAt?: string;
+  updatedBy?: string;
+  updatedAt?: string;
 }
 
 interface Props {
+  clientId?: string;
   initialNotes: string | null;
   onChange: (serializedNotes: string) => void;
 }
@@ -101,7 +112,10 @@ export function parseNotes(rawNotes: string | null | undefined): NoteEntry[] {
   return [];
 }
 
-export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
+export function ClientNotesTimeline({ clientId, initialNotes, onChange }: Props) {
+  const { data: session } = useSession();
+  const currentUserName = session?.user?.name || (session?.user as { username?: string })?.username || 'Atlas Admin';
+
   const [notes, setNotes] = useState<NoteEntry[]>(() => parseNotes(initialNotes));
   const [newText, setNewText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<NoteCategory>('NOTA');
@@ -112,24 +126,62 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
   const [viewColumns, setViewColumns] = useState<'single' | 'double'>('single');
   const [showModalForm, setShowModalForm] = useState(true);
 
+  // States for Note Editing & Deleting Confirmation
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+  const [editingText, setEditingText] = useState('');
+  const [editingCategory, setEditingCategory] = useState<NoteCategory>('NOTA');
+  const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
+
+  // Auto-hide toast
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(null), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
 
   // Close on Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsExpanded(false);
+      if (e.key === 'Escape') {
+        setIsExpanded(false);
+        setEditingNoteId(null);
+        setDeletingNoteId(null);
+      }
     };
-    if (isExpanded) {
+    if (isExpanded || editingNoteId || deletingNoteId) {
       window.addEventListener('keydown', handleKeyDown);
     }
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isExpanded]);
+  }, [isExpanded, editingNoteId, deletingNoteId]);
 
-  const updateNotesList = (updated: NoteEntry[]) => {
+  const updateNotesList = async (updated: NoteEntry[], persistBackend = false, toastSuccess?: string) => {
     setNotes(updated);
-    onChange(JSON.stringify(updated));
+    const serialized = JSON.stringify(updated);
+    onChange(serialized);
+
+    if (persistBackend && clientId) {
+      try {
+        await fetch(`/api/clients/${clientId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ notes: serialized }),
+        });
+        if (toastSuccess) {
+          setToastMessage(toastSuccess);
+        }
+      } catch (err) {
+        console.error('Error persisting notes:', err);
+      }
+    } else if (toastSuccess) {
+      setToastMessage(toastSuccess);
+    }
   };
 
   const handleAddNote = (e?: React.FormEvent) => {
@@ -139,19 +191,47 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
     const newEntry: NoteEntry = {
       id: Date.now().toString(),
       date: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
       category: selectedCategory,
       text: newText.trim(),
-      author: 'Atlas Admin',
+      author: currentUserName,
     };
 
     const updated = [newEntry, ...notes];
-    updateNotesList(updated);
+    updateNotesList(updated, true, 'Nueva nota registrada y auditada correctamente.');
     setNewText('');
   };
 
-  const handleDeleteNote = (id: string) => {
+  const startEditNote = (note: NoteEntry) => {
+    setEditingNoteId(note.id);
+    setEditingText(note.text);
+    setEditingCategory(note.category);
+  };
+
+  const handleSaveEdit = (noteId: string) => {
+    if (!editingText.trim()) return;
+
+    const updated = notes.map((n) => {
+      if (n.id === noteId) {
+        return {
+          ...n,
+          text: editingText.trim(),
+          category: editingCategory,
+          updatedBy: currentUserName,
+          updatedAt: new Date().toISOString(),
+        };
+      }
+      return n;
+    });
+
+    updateNotesList(updated, true, 'Nota actualizada con registro de auditoría.');
+    setEditingNoteId(null);
+  };
+
+  const handleConfirmDeleteNote = (id: string) => {
     const updated = notes.filter((n) => n.id !== id);
-    updateNotesList(updated);
+    updateNotesList(updated, true, 'Nota eliminada permanentemente.');
+    setDeletingNoteId(null);
   };
 
   const handleUseTemplate = (tmpl: typeof QUICK_TEMPLATES[0]) => {
@@ -286,16 +366,18 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
           {filteredNotes.map((note, index) => {
             const cfg = CATEGORY_CONFIG[note.category] || CATEGORY_CONFIG.NOTA;
             const Icon = cfg.icon;
+            const isEditing = editingNoteId === note.id;
+            const isDeleting = deletingNoteId === note.id;
 
             return (
               <div
                 key={note.id || index}
                 className={`group relative bg-[#001c19]/90 hover:bg-[#00221f] border border-[#023A40] hover:border-[#8BD990]/40 rounded-2xl transition-all shadow-md flex flex-col justify-between w-full ${isModal ? 'p-6 sm:p-7' : 'p-4'}`}
               >
-                {/* Note Card Header */}
                 <div>
-                  <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-[#909CC2]/10">
-                    <div className="flex items-center gap-3">
+                  {/* Note Card Header */}
+                  <div className="flex items-center justify-between mb-3 pb-2.5 border-b border-[#909CC2]/10 gap-2">
+                    <div className="flex items-center gap-2.5 flex-wrap">
                       <span
                         className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-brand font-medium tracking-wide ${cfg.badge}`}
                       >
@@ -308,27 +390,127 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
                       </span>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteNote(note.id)}
-                      className="opacity-0 group-hover:opacity-100 text-[#909CC2]/50 hover:text-red-400 transition-opacity p-1.5 cursor-pointer rounded-lg hover:bg-red-950/40"
-                      title="Eliminar entrada"
-                    >
-                      <Trash2 size={15} />
-                    </button>
+                    {/* Action buttons (Edit and Delete) */}
+                    <div className="flex items-center gap-1">
+                      {!isEditing && (
+                        <button
+                          type="button"
+                          onClick={() => startEditNote(note)}
+                          className="text-[#909CC2] hover:text-[#8BD990] transition-colors p-1.5 cursor-pointer rounded-lg hover:bg-[#023A40]/80"
+                          title="Editar y agregar información (Auditoría)"
+                        >
+                          <Pencil size={14} />
+                        </button>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => setDeletingNoteId(isDeleting ? null : note.id)}
+                        className="text-[#909CC2]/70 hover:text-red-400 transition-colors p-1.5 cursor-pointer rounded-lg hover:bg-red-950/40"
+                        title="Eliminar nota"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Note Content */}
-                  <p className={`text-[#F0EBD8] leading-relaxed whitespace-pre-wrap pl-1 font-light ${isModal ? 'text-sm sm:text-base leading-7' : 'text-xs'}`}>
-                    {note.text}
-                  </p>
+                  {/* Deletion confirmation banner */}
+                  {isDeleting && (
+                    <div className="p-3 mb-3 bg-red-950/60 border border-red-500/50 rounded-xl text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 animate-fadeIn">
+                      <div className="flex items-center gap-2 text-red-200">
+                        <AlertTriangle size={15} className="text-red-400 shrink-0" />
+                        <span>¿Eliminar esta nota? Esta acción es permanente.</span>
+                      </div>
+                      <div className="flex items-center gap-2 self-end sm:self-auto">
+                        <button
+                          type="button"
+                          onClick={() => setDeletingNoteId(null)}
+                          className="px-2.5 py-1 rounded-lg bg-[#001412] hover:bg-[#023A40] text-[#909CC2] text-xs font-brand cursor-pointer"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleConfirmDeleteNote(note.id)}
+                          className="px-3 py-1 rounded-lg bg-red-600 hover:bg-red-500 text-white font-semibold text-xs font-brand flex items-center gap-1 shadow-md cursor-pointer"
+                        >
+                          <Trash2 size={12} />
+                          <span>Sí, Eliminar</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Note Content / Editing Form */}
+                  {isEditing ? (
+                    <div className="space-y-3 py-1 animate-fadeIn">
+                      <div className="flex flex-wrap items-center gap-1.5 pb-1">
+                        <span className="text-[10px] uppercase font-brand text-[#909CC2]">Cambiar tipo:</span>
+                        {(Object.keys(CATEGORY_CONFIG) as NoteCategory[]).map((cat) => {
+                          const catCfg = CATEGORY_CONFIG[cat];
+                          const CatIcon = catCfg.icon;
+                          const isSelected = editingCategory === cat;
+                          return (
+                            <button
+                              key={cat}
+                              type="button"
+                              onClick={() => setEditingCategory(cat)}
+                              className={`px-2 py-0.5 rounded-lg text-[11px] font-brand flex items-center gap-1 border transition-all cursor-pointer ${
+                                isSelected ? `${catCfg.badge} font-semibold` : 'bg-[#001412] text-[#909CC2] border-[#023A40]'
+                              }`}
+                            >
+                              <CatIcon size={11} className={isSelected ? catCfg.color : 'text-[#909CC2]'} />
+                              <span>{catCfg.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <textarea
+                        value={editingText}
+                        onChange={(e) => setEditingText(e.target.value)}
+                        rows={isModal ? 5 : 3}
+                        className="w-full bg-[#001412] border border-[#8BD990]/50 rounded-xl p-3 text-xs sm:text-sm text-[#F0EBD8] focus:outline-none focus:ring-1 focus:ring-[#8BD990] resize-none"
+                      />
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setEditingNoteId(null)}
+                          className="px-3 py-1.5 rounded-lg text-xs font-brand text-[#909CC2] hover:text-white bg-[#001412] border border-[#023A40] cursor-pointer"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleSaveEdit(note.id)}
+                          className="px-3.5 py-1.5 rounded-lg text-xs font-brand atlas-gradient-btn flex items-center gap-1.5 shadow-md font-semibold cursor-pointer"
+                        >
+                          <Check size={14} />
+                          <span>Guardar Cambio y Auditar</span>
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className={`text-[#F0EBD8] leading-relaxed whitespace-pre-wrap pl-1 font-light ${isModal ? 'text-sm sm:text-base leading-7' : 'text-xs'}`}>
+                      {note.text}
+                    </p>
+                  )}
                 </div>
 
-                {isModal && note.author && (
-                  <div className="pt-3 mt-4 border-t border-[#909CC2]/10 flex items-center justify-between text-xs text-[#909CC2]/60">
-                    <span>Registrado por: <span className="text-[#8BD990] font-medium">{note.author}</span></span>
+                {/* Audit Information Footer (Always Visible in both views) */}
+                <div className="pt-3 mt-3 border-t border-[#909CC2]/10 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#909CC2]/70 font-mono">
+                  <div className="flex items-center gap-1.5">
+                    <UserCheck size={12} className="text-[#8BD990]" />
+                    <span>Registrado por:</span>
+                    <span className="text-[#8BD990] font-semibold">{note.author || 'Atlas Admin'}</span>
                   </div>
-                )}
+
+                  {note.updatedBy && (
+                    <div className="flex items-center gap-1.5 bg-[#001412]/80 px-2 py-0.5 rounded border border-[#023A40] text-amber-300/90" title={`Editado el ${formatDate(note.updatedAt || '')}`}>
+                      <History size={11} className="text-amber-400" />
+                      <span>Modificado por: <strong className="text-amber-200">{note.updatedBy}</strong> ({formatDate(note.updatedAt || '')})</span>
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -339,6 +521,14 @@ export function ClientNotesTimeline({ initialNotes, onChange }: Props) {
 
   return (
     <div className="space-y-4">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="p-3 rounded-xl text-xs flex items-center gap-2.5 bg-[#8BD990]/15 border border-[#8BD990]/40 text-[#8BD990] animate-fadeIn shadow-md">
+          <CheckCircle2 size={16} className="shrink-0" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
       {/* Action Bar with Expand / Fullscreen Button */}
       <div className="flex items-center justify-between p-3.5 rounded-2xl bg-[#001c19]/90 border border-[#023A40]">
         <div className="flex items-center gap-2.5">
