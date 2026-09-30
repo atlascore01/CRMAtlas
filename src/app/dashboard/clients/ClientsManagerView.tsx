@@ -14,7 +14,8 @@ import {
   CheckCircle2, 
   AlertCircle,
   Trash2,
-  AlertTriangle
+  AlertTriangle,
+  FileSpreadsheet
 } from 'lucide-react';
 
 interface Client {
@@ -155,13 +156,22 @@ export function ClientsManagerView({ initialClients }: Props) {
           </p>
         </div>
 
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="atlas-gradient-btn px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider font-brand flex items-center justify-center gap-2 shadow-lg cursor-pointer"
-        >
-          <Plus size={16} />
-          <span>Nuevo Cliente</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="atlas-gradient-btn px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider font-brand flex items-center justify-center gap-2 shadow-lg cursor-pointer"
+          >
+            <Plus size={16} />
+            <span>Nuevo Cliente</span>
+          </button>
+          <Link
+            href="/dashboard/presupuesto"
+            className="px-4 py-2.5 rounded-xl bg-[#023A40] hover:bg-[#064E57] border border-[#8BD990]/30 text-[#8BD990] hover:text-[#A2E5A6] text-xs font-semibold uppercase tracking-wider font-brand flex items-center justify-center gap-2 transition-all shadow-md"
+          >
+            <FileSpreadsheet size={16} />
+            <span>Crear Presupuesto</span>
+          </Link>
+        </div>
       </div>
 
       {/* Filter Bar */}

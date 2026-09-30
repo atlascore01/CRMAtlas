@@ -12,7 +12,8 @@ import {
   CheckCircle2, 
   Sparkles,
   ArrowRight,
-  Briefcase
+  Briefcase,
+  FileSpreadsheet
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -77,10 +78,17 @@ export default async function DashboardOverviewPage() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/dashboard/clients"
-              className="px-4 py-2.5 rounded-xl atlas-gradient-btn text-xs font-semibold uppercase tracking-wider font-brand flex items-center gap-2"
+              className="px-4 py-2.5 rounded-xl bg-[#023A40]/80 hover:bg-[#064E57] border border-[#8BD990]/30 text-[#F0EBD8] text-xs font-semibold uppercase tracking-wider font-brand flex items-center gap-2 transition-all"
             >
               <Users size={16} />
               <span>Directorio de Clientes</span>
+            </Link>
+            <Link
+              href="/dashboard/presupuesto"
+              className="px-4 py-2.5 rounded-xl atlas-gradient-btn text-xs font-semibold uppercase tracking-wider font-brand flex items-center gap-2 shadow-lg"
+            >
+              <FileSpreadsheet size={16} />
+              <span>Armar Presupuesto</span>
             </Link>
           </div>
         </div>

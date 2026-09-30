@@ -12,7 +12,8 @@ import {
   Menu, 
   X, 
   Sparkles, 
-  Activity 
+  Activity,
+  FileSpreadsheet
 } from 'lucide-react';
 
 interface ShellProps {
@@ -45,6 +46,12 @@ export function DashboardShell({ children }: ShellProps) {
       name: 'Directorio de Clientes',
       href: '/dashboard/clients',
       icon: Users,
+      exact: false,
+    },
+    {
+      name: 'Armado de Presupuestos',
+      href: '/dashboard/presupuesto',
+      icon: FileSpreadsheet,
       exact: false,
     },
   ];
@@ -192,7 +199,7 @@ export function DashboardShell({ children }: ShellProps) {
               <span className="text-[#8BD990] font-brand">Atlascore CRM</span>
               <span>/</span>
               <span className="text-[#F0EBD8] capitalize">
-                {pathname === '/dashboard' ? 'Panel Principal' : 'Clientes'}
+                {pathname === '/dashboard' ? 'Panel Principal' : pathname?.startsWith('/dashboard/presupuesto') ? 'Armado de Presupuestos' : 'Clientes'}
               </span>
             </div>
           </div>
