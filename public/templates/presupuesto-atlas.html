@@ -1,38 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Presupuesto - Atlascore</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
   <style>
     :root {
-      --atlas-obsidian:   #001412;
-      --atlas-teal:       #023A40;
+      --atlas-obsidian: #001412;
+      --atlas-teal: #023A40;
       --atlas-teal-light: #064E57;
-      --atlas-mint:       #8BD990;
+      --atlas-mint: #8BD990;
       --atlas-mint-light: #A2E5A6;
-      --atlas-indigo:     #4B4BA1;
-      --atlas-lavender:   #909CC2;
-      --atlas-cream:      #F0EBD8;
-      --atlas-white:      #FFFFFF;
-      --border-subtle:    rgba(144, 156, 194, 0.18);
-      --border-accent:    rgba(139, 217, 144, 0.35);
-      --glow-mint:        rgba(139, 217, 144, 0.12);
-      --glow-indigo:      rgba(75, 75, 161, 0.10);
+      --atlas-indigo: #4B4BA1;
+      --atlas-lavender: #909CC2;
+      --atlas-cream: #F0EBD8;
+      --atlas-white: #FFFFFF;
+      --border-subtle: rgba(144, 156, 194, 0.18);
+      --border-accent: rgba(139, 217, 144, 0.35);
+      --glow-mint: rgba(139, 217, 144, 0.12);
+      --glow-indigo: rgba(75, 75, 161, 0.10);
       --font-brand: 'Chakra Petch', sans-serif;
-      --font-body:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --page-pad:   48px;
-      --section-gap: 28px;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --page-pad: 44px;
+      --section-gap: 24px;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    @page { size: A4; margin: 0; }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
     body {
       font-family: var(--font-body);
-      font-size: 13px;
-      line-height: 1.55;
+      font-size: 12.5px;
+      line-height: 1.5;
       color: var(--atlas-obsidian);
       background: #081014;
       -webkit-print-color-adjust: exact;
@@ -46,55 +61,86 @@
       z-index: 1000;
       background: var(--atlas-obsidian);
       color: var(--atlas-cream);
-      padding: 12px 28px;
+      padding: 10px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
       font-family: var(--font-brand);
       border-bottom: 1px solid rgba(139, 217, 144, 0.2);
     }
+
     .toolbar-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-size: 14px;
+      gap: 10px;
+      font-size: 13px;
       letter-spacing: 0.06em;
       font-weight: 700;
       color: var(--atlas-white);
     }
-    .toolbar-brand span { color: var(--atlas-mint); }
-    .toolbar-actions {
+
+    .toolbar-brand span {
+      color: var(--atlas-mint);
+    }
+
+    .toolbar-pill {
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--atlas-mint);
+      background: rgba(139, 217, 144, 0.12);
+      border: 1px solid rgba(139, 217, 144, 0.3);
+      padding: 2px 7px;
+      border-radius: 999px;
+      margin-left: 4px;
+    }
+
+    .toolbar-controls {
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
     }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .toolbar-group {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--atlas-lavender);
     }
+
     .toolbar-select {
       background: var(--atlas-teal);
       color: var(--atlas-cream);
       border: 1px solid var(--border-accent);
-      padding: 6px 12px;
+      padding: 5px 10px;
       border-radius: 6px;
       font-family: var(--font-body);
-      font-size: 12px;
+      font-size: 11.5px;
       cursor: pointer;
       outline: none;
     }
-    .toolbar-select:focus { border-color: var(--atlas-mint); }
+
+    .toolbar-select:focus {
+      border-color: var(--atlas-mint);
+    }
 
     .btn {
-      padding: 7px 14px;
+      padding: 6px 12px;
       border-radius: 6px;
       font-family: var(--font-brand);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -103,62 +149,105 @@
       border: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
-    .btn-primary { background: var(--atlas-mint); color: var(--atlas-obsidian); }
-    .btn-primary:hover { background: var(--atlas-mint-light); transform: translateY(-1px); }
-    .btn-secondary { background: var(--atlas-teal); color: var(--atlas-cream); border: 1px solid var(--border-subtle); }
-    .btn-secondary:hover { background: var(--atlas-teal-light); border-color: var(--atlas-mint); }
+
+    .btn-primary {
+      background: var(--atlas-mint);
+      color: var(--atlas-obsidian);
+    }
+
+    .btn-primary:hover {
+      background: var(--atlas-mint-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-save-pdf {
+      background: linear-gradient(135deg, var(--atlas-mint) 0%, #68C7A2 100%);
+      color: var(--atlas-obsidian);
+      font-weight: 700;
+      padding: 7px 14px;
+      box-shadow: 0 0 16px rgba(139, 217, 144, 0.25);
+    }
+
+    .btn-save-pdf:hover {
+      background: linear-gradient(135deg, var(--atlas-mint-light) 0%, #7ee0bb 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 0 22px rgba(139, 217, 144, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--atlas-teal);
+      color: var(--atlas-cream);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-secondary:hover {
+      background: var(--atlas-teal-light);
+      border-color: var(--atlas-mint);
+    }
+
     .btn-danger-sm {
       background: rgba(220, 53, 69, 0.12);
       color: #ea5455;
       border: 1px solid rgba(220, 53, 69, 0.25);
-      padding: 3px 7px;
+      padding: 2px 6px;
       border-radius: 4px;
-      font-size: 11px;
+      font-size: 10px;
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .btn-danger-sm:hover { background: #dc3545; color: white; }
-    
+
+    .btn-danger-sm:hover {
+      background: #dc3545;
+      color: white;
+    }
+
     .btn-add-item {
       width: 100%;
-      padding: 8px 14px;
+      padding: 7px 12px;
       background: rgba(139, 217, 144, 0.06);
       border: 1px dashed rgba(139, 217, 144, 0.4);
       color: var(--atlas-teal);
       font-family: var(--font-brand);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       letter-spacing: 0.06em;
       border-radius: 6px;
       cursor: pointer;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       transition: all 0.2s ease;
       text-transform: uppercase;
     }
-    .btn-add-item:hover { background: rgba(139, 217, 144, 0.18); border-color: var(--atlas-mint); }
+
+    .btn-add-item:hover {
+      background: rgba(139, 217, 144, 0.18);
+      border-color: var(--atlas-mint);
+    }
 
     /* Page Container (A4) */
     .page {
       width: 210mm;
       min-height: 297mm;
-      margin: 28px auto;
+      margin: 24px auto;
       padding: var(--page-pad);
       position: relative;
       overflow: hidden;
       background: var(--atlas-white);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
       border-radius: 4px;
     }
+
     .page::before {
       content: '';
       position: absolute;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 6px;
       height: 100%;
       background: linear-gradient(180deg, var(--atlas-mint) 0%, var(--atlas-indigo) 100%);
     }
+
     .page::after {
       content: '';
       position: absolute;
@@ -170,64 +259,82 @@
       pointer-events: none;
       z-index: 0;
     }
-    .page > * { position: relative; z-index: 1; }
+
+    .page>* {
+      position: relative;
+      z-index: 1;
+    }
 
     /* Header */
     .header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      padding-bottom: 20px;
+      padding-bottom: 16px;
       border-bottom: 2px solid var(--atlas-teal);
       margin-bottom: var(--section-gap);
     }
+
     .header-brand {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
-    .header-logo { width: 68px; height: auto; }
+
+    .header-logo {
+      width: 64px;
+      height: auto;
+    }
+
     .header-brand-text h1 {
       font-family: var(--font-brand);
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
       letter-spacing: 0.04em;
       color: var(--atlas-teal);
       text-transform: uppercase;
       line-height: 1;
     }
+
     .header-brand-text .tagline {
       font-family: var(--font-brand);
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 400;
       letter-spacing: 0.12em;
       color: var(--atlas-lavender);
       text-transform: uppercase;
-      margin-top: 4px;
+      margin-top: 3px;
     }
-    .header-doc-type { text-align: right; }
+
+    .header-doc-type {
+      text-align: right;
+    }
+
     .header-doc-type h2 {
       font-family: var(--font-brand);
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 600;
       letter-spacing: 0.06em;
       color: var(--atlas-obsidian);
       text-transform: uppercase;
     }
+
     .header-doc-type .doc-number {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 500;
       color: var(--atlas-lavender);
       margin-top: 2px;
     }
+
     .validity {
       display: inline-block;
       background: linear-gradient(135deg, var(--atlas-mint) 0%, var(--atlas-teal-light) 100%);
       color: var(--atlas-white);
       font-family: var(--font-brand);
-      font-size: 10px; font-weight: 600;
+      font-size: 9.5px;
+      font-weight: 600;
       letter-spacing: 0.06em;
-      padding: 4px 14px;
+      padding: 3px 12px;
       border-radius: 20px;
       margin-top: 4px;
     }
@@ -236,43 +343,56 @@
     .meta-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
       margin-bottom: var(--section-gap);
     }
+
     .meta-card {
       background: linear-gradient(135deg, rgba(2, 58, 64, 0.05) 0%, rgba(0, 20, 18, 0.02) 100%);
       border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 18px 22px;
+      border-radius: 8px;
+      padding: 14px 18px;
     }
+
     .meta-card-title {
       font-family: var(--font-brand);
-      font-size: 9.5px;
+      font-size: 9px;
       font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--atlas-mint);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
+
     .meta-card-title::before {
       content: '';
       display: inline-block;
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       background: var(--atlas-mint);
       border-radius: 2px;
     }
-    .meta-card p { font-size: 12.5px; color: var(--atlas-obsidian); margin-bottom: 4px; }
-    .meta-card p strong { color: var(--atlas-teal); font-weight: 600; }
+
+    .meta-card p {
+      font-size: 12px;
+      color: var(--atlas-obsidian);
+      margin-bottom: 3px;
+    }
+
+    .meta-card p strong {
+      color: var(--atlas-teal);
+      font-weight: 600;
+    }
+
     .meta-card .meta-label {
       display: inline-block;
-      min-width: 85px;
+      min-width: 80px;
       font-weight: 500;
       color: var(--atlas-teal-light);
-      font-size: 11.5px;
+      font-size: 11px;
     }
 
     /* Section Headings */
@@ -280,17 +400,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 10px;
-      margin-bottom: 12px;
+      margin-top: 8px;
+      margin-bottom: 10px;
     }
+
     .section-heading {
       font-family: var(--font-brand);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--atlas-teal);
-      padding: 7px 16px;
+      padding: 6px 14px;
       background: linear-gradient(90deg, rgba(139, 217, 144, 0.10) 0%, transparent 100%);
       border-left: 3px solid var(--atlas-mint);
       border-radius: 0 6px 6px 0;
@@ -305,190 +426,416 @@
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
-      margin-bottom: 10px;
-      font-size: 12px;
+      margin-bottom: 8px;
+      font-size: 11.5px;
     }
+
     .items-table thead th {
       font-family: var(--font-brand);
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 600;
       letter-spacing: 0.10em;
       text-transform: uppercase;
       color: var(--atlas-cream);
       background: var(--atlas-teal);
-      padding: 9px 12px;
+      padding: 8px 10px;
       text-align: left;
       white-space: nowrap;
     }
-    .items-table thead th:first-child { border-radius: 8px 0 0 0; }
-    .items-table thead th.last-th { border-radius: 0 8px 0 0; text-align: right; }
+
+    .items-table thead th:first-child {
+      border-radius: 6px 0 0 0;
+    }
+
+    .items-table thead th.last-th {
+      border-radius: 0 6px 0 0;
+      text-align: right;
+    }
+
     .items-table tbody td {
-      padding: 8px 12px;
+      padding: 7px 10px;
       border-bottom: 1px solid var(--border-subtle);
       vertical-align: middle;
     }
-    .items-table tbody tr:last-child td { border-bottom: none; }
-    .items-table tbody tr:nth-child(even) td { background: rgba(2, 58, 64, 0.025); }
-    .items-table tbody tr:hover td { background: var(--glow-mint); }
-    
+
+    .items-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .items-table tbody tr:nth-child(even) td {
+      background: rgba(2, 58, 64, 0.025);
+    }
+
+    .items-table tbody tr:hover td {
+      background: var(--glow-mint);
+    }
+
     .items-table .col-qty,
     .items-table .col-price,
-    .items-table .col-total { text-align: right; font-variant-numeric: tabular-nums; }
-    .items-table .col-item { min-width: 200px; }
-    .items-table .col-actions { text-align: center; width: 40px; }
-    .items-table .item-name { font-weight: 600; color: var(--atlas-obsidian); }
-    .items-table .item-desc { font-size: 11px; color: var(--atlas-lavender); margin-top: 2px; }
+    .items-table .col-tax,
+    .items-table .col-total {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
 
-    /* Number Inputs */
+    .items-table .col-item {
+      min-width: 180px;
+    }
+
+    .items-table .col-actions {
+      text-align: center;
+      width: 36px;
+    }
+
+    .items-table .item-name {
+      font-weight: 600;
+      color: var(--atlas-obsidian);
+    }
+
+    .items-table .item-desc {
+      font-size: 10.5px;
+      color: var(--atlas-lavender);
+      margin-top: 2px;
+    }
+
+    /* Number & Select Inputs */
     .num-input {
-      width: 75px;
+      width: 65px;
       text-align: right;
       border: 1px solid var(--border-subtle);
       border-radius: 4px;
-      padding: 4px 6px;
+      padding: 3px 5px;
       font-family: var(--font-body);
-      font-size: 12px;
-      background: rgba(255, 255, 255, 0.8);
+      font-size: 11.5px;
+      background: rgba(255, 255, 255, 0.9);
       color: var(--atlas-obsidian);
       transition: all 0.15s ease;
     }
+
     .num-input:focus {
       outline: none;
       border-color: var(--atlas-mint);
       box-shadow: 0 0 0 2px var(--glow-mint);
       background: #ffffff;
     }
-    .num-input.price-input { width: 95px; }
+
+    .num-input.price-input {
+      width: 85px;
+    }
+
+    .tax-select-item {
+      background: rgba(2, 58, 64, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--atlas-teal);
+      border-radius: 4px;
+      padding: 3px 5px;
+      font-size: 10.5px;
+      font-family: var(--font-body);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .tax-select-item:focus {
+      border-color: var(--atlas-mint);
+      background: #ffffff;
+    }
+
+    .tax-badge {
+      display: inline-block;
+      font-family: var(--font-brand);
+      font-size: 9px;
+      font-weight: 600;
+      color: var(--atlas-indigo);
+      background: rgba(75, 75, 161, 0.08);
+      border: 1px solid rgba(75, 75, 161, 0.2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
 
     /* Content Editable Styling */
     [contenteditable="true"] {
       outline: none;
       border-radius: 3px;
       transition: background 0.15s ease, box-shadow 0.15s ease;
-      padding: 1px 4px;
+      padding: 1px 3px;
     }
+
     [contenteditable="true"]:hover {
       background: rgba(139, 217, 144, 0.12);
     }
+
     [contenteditable="true"]:focus {
       background: rgba(139, 217, 144, 0.25);
       box-shadow: 0 0 0 2px var(--atlas-mint);
     }
 
-    /* Totals Panel */
-    .totals-wrapper { display: flex; justify-content: flex-end; margin-bottom: var(--section-gap); margin-top: 14px; }
-    .totals-panel {
-      width: 300px;
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      overflow: hidden;
+    /* Totals Panel Horizontal Layout */
+    .totals-wrapper {
+      width: 100%;
+      margin-top: 16px;
+      margin-bottom: var(--section-gap);
+    }
+
+    .totals-horizontal {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+
+    .total-card {
       background: #fafbfc;
-    }
-    .totals-row {
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px 14px;
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
-      padding: 9px 16px;
-      font-size: 12px;
-      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+      transition: all 0.2s ease;
     }
-    .totals-row:last-child { border-bottom: none; }
-    .totals-row .label { color: var(--atlas-teal-light); font-weight: 500; }
-    .totals-row .value { font-weight: 600; color: var(--atlas-obsidian); font-variant-numeric: tabular-nums; }
-    .totals-row.total-final {
-      background: var(--atlas-teal);
-      color: var(--atlas-cream);
+
+    .total-card-label {
       font-family: var(--font-brand);
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 12px 16px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--atlas-teal-light);
+      margin-bottom: 6px;
     }
-    .totals-row.total-final .label,
-    .totals-row.total-final .value { color: var(--atlas-cream); }
+
+    .total-card-value {
+      font-family: var(--font-brand);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--atlas-obsidian);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 4px;
+    }
+
+    .total-card-sub {
+      font-size: 9.5px;
+      color: var(--atlas-lavender);
+      line-height: 1.35;
+    }
+
+    .total-card.card-contado {
+      background: rgba(139, 217, 144, 0.08);
+      border: 1px solid rgba(139, 217, 144, 0.4);
+    }
+    .total-card.card-contado .total-card-label {
+      color: #0a7c3e;
+    }
+    .total-card.card-contado .total-card-value {
+      color: var(--atlas-teal);
+    }
+
+    .total-card.card-mp {
+      background: rgba(0, 158, 227, 0.06);
+      border: 1px solid rgba(0, 158, 227, 0.35);
+    }
+    .total-card.card-mp .total-card-label {
+      color: #007bb3;
+    }
+    .total-card.card-mp .total-card-value {
+      color: #007bb3;
+    }
+
+    .total-card.card-final {
+      background: var(--atlas-teal);
+      border: 1px solid var(--atlas-teal-light);
+      color: var(--atlas-cream);
+      box-shadow: 0 4px 15px rgba(2, 58, 64, 0.15);
+    }
+    .total-card.card-final .total-card-label {
+      color: var(--atlas-mint);
+    }
+    .total-card.card-final .total-card-value {
+      color: var(--atlas-cream);
+      font-size: 19px;
+    }
+    .total-card.card-final .total-card-sub {
+      color: rgba(240, 235, 216, 0.85);
+    }
+
+    /* Formas de Pago Box */
+    .payment-methods-box {
+      background: linear-gradient(135deg, rgba(2, 58, 64, 0.04) 0%, rgba(139, 217, 144, 0.04) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: var(--section-gap);
+    }
+
+    .payment-box-header h3 {
+      font-family: var(--font-brand);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--atlas-teal);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .payment-methods-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .payment-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px 14px;
+      position: relative;
+    }
+
+    .payment-card-badge {
+      font-family: var(--font-brand);
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #0a7c3e;
+      background: rgba(139, 217, 144, 0.15);
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-bottom: 5px;
+    }
+
+    .payment-card-badge.mp-badge {
+      color: #007bb3;
+      background: rgba(0, 158, 227, 0.12);
+    }
+
+    .payment-card-title {
+      font-family: var(--font-brand);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--atlas-obsidian);
+      margin-bottom: 3px;
+    }
+
+    .payment-card-price {
+      font-family: var(--font-brand);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--atlas-teal);
+      margin-bottom: 3px;
+    }
+
+    .payment-card-sub {
+      font-size: 11.5px;
+      color: var(--atlas-obsidian);
+      margin-bottom: 5px;
+      background: rgba(0, 158, 227, 0.05);
+      padding: 5px 8px;
+      border-radius: 5px;
+      border-left: 3px solid #009ee3;
+    }
+
+    .payment-card-detail {
+      font-size: 10px;
+      color: var(--atlas-lavender);
+      line-height: 1.35;
+    }
 
     /* Conditions Box */
     .conditions-box {
-      background: linear-gradient(135deg, rgba(2, 58, 64, 0.04) 0%, rgba(75, 75, 161, 0.03) 100%);
+      background: linear-gradient(135deg, rgba(2, 58, 64, 0.03) 0%, rgba(75, 75, 161, 0.02) 100%);
       border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 18px 22px;
-      margin-bottom: var(--section-gap);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 60px;
     }
+
     .conditions-box-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
+
     .conditions-box h3 {
       font-family: var(--font-brand);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       letter-spacing: 0.10em;
       text-transform: uppercase;
       color: var(--atlas-indigo);
     }
-    .conditions-box ul { list-style: none; padding: 0; }
+
+    .conditions-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
     .conditions-box ul li {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--atlas-teal-light);
-      padding: 4px 28px 4px 16px;
+      padding: 3px 24px 3px 14px;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
+
     .conditions-box ul li::before {
       content: '\25B8';
       position: absolute;
       left: 0;
       color: var(--atlas-mint);
-      font-size: 12px;
+      font-size: 11px;
     }
-    .condition-text { flex-grow: 1; }
 
-    /* Signatures */
-    .signature-zone {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin-bottom: 50px;
-      margin-top: 10px;
+    .condition-text {
+      flex-grow: 1;
     }
-    .sig-block { text-align: center; padding-top: 8px; }
-    .sig-line { border-top: 1px solid var(--atlas-teal); margin-top: 50px; padding-top: 8px; }
-    .sig-label {
-      font-family: var(--font-brand);
-      font-size: 10px; font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--atlas-teal);
-    }
-    .sig-sub { font-size: 10px; color: var(--atlas-lavender); margin-top: 2px; }
 
     /* Footer */
     .footer {
       position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 16px var(--page-pad);
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 14px var(--page-pad);
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-top: 1px solid var(--border-subtle);
       background: linear-gradient(90deg, rgba(2, 58, 64, 0.04) 0%, transparent 100%);
     }
+
     .footer-left {
       font-family: var(--font-brand);
-      font-size: 9px; font-weight: 500;
+      font-size: 8.5px;
+      font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--atlas-lavender);
     }
-    .footer-center { font-size: 10px; color: var(--atlas-lavender); }
-    .footer-center a { color: var(--atlas-mint); text-decoration: none; }
+
+    .footer-center {
+      font-size: 9.5px;
+      color: var(--atlas-lavender);
+    }
+
+    .footer-center a {
+      color: var(--atlas-mint);
+      text-decoration: none;
+    }
+
     .footer-right {
       font-family: var(--font-brand);
-      font-size: 9px;
+      font-size: 8.5px;
       color: var(--atlas-lavender);
       letter-spacing: 0.06em;
     }
@@ -497,62 +844,167 @@
     .badge {
       display: inline-block;
       font-family: var(--font-brand);
-      font-size: 9px; font-weight: 600;
+      font-size: 8.5px;
+      font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 3px 8px;
+      padding: 2px 7px;
       border-radius: 4px;
     }
-    .badge-hw  { background: rgba(139, 217, 144, 0.15); color: #0a7c3e; }
-    .badge-sw  { background: rgba(75, 75, 161, 0.12);  color: var(--atlas-indigo); }
-    .badge-svc { background: rgba(144, 156, 194, 0.18); color: #4e5a7b; }
 
-    /* Print Styles */
+    .badge-hw {
+      background: rgba(139, 217, 144, 0.15);
+      color: #0a7c3e;
+    }
+
+    .badge-sw {
+      background: rgba(75, 75, 161, 0.12);
+      color: var(--atlas-indigo);
+    }
+
+    .badge-svc {
+      background: rgba(144, 156, 194, 0.18);
+      color: #4e5a7b;
+    }
+
+    /* Print Styles & PDF Export Rules */
     @media print {
-      body { background: white; }
-      .no-print { display: none !important; }
-      .page {
-        margin: 0;
-        padding: 36px;
-        box-shadow: none;
-        width: 100%;
-        min-height: auto;
-        border-radius: 0;
+      @page {
+        size: A4 portrait;
+        margin: 10mm 12mm 12mm 12mm;
       }
-      .page::before { width: 4px; }
+
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      /* REGLA CRÍTICA: No imprimir datos de IVA ni IIBB */
+      .col-tax,
+      .tax-select-item,
+      .tax-badge,
+      .tax-badge-print,
+      .tax-row-print-hide {
+        display: none !important;
+      }
+
+      .page {
+        margin: 0 !important;
+        padding: 10px 0 !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: auto !important;
+        border-radius: 0 !important;
+        border: none !important;
+      }
+
+      .page::before,
+      .page::after {
+        display: none !important;
+      }
+
       [contenteditable="true"] {
         padding: 0 !important;
         background: transparent !important;
         box-shadow: none !important;
       }
+
       .num-input {
         border: none !important;
         background: transparent !important;
         padding: 0 !important;
-        font-size: 12px !important;
+        font-size: 11.5px !important;
         font-family: inherit !important;
         color: inherit !important;
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: textfield;
       }
+
       .num-input::-webkit-outer-spin-button,
       .num-input::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
       }
+
+      /* REGLA CRÍTICA: Evitar que los elementos se corten entre hojas */
+      .quote-section {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        margin-bottom: 14px !important;
+      }
+
+      .items-table {
+        width: 100% !important;
+      }
+
+      .items-table tr {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .items-table thead {
+        display: table-header-group !important;
+      }
+
+      .totals-wrapper,
+      .totals-horizontal,
+      .total-card,
+      .payment-methods-box,
+      .conditions-box {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .section-header-wrap {
+        break-after: avoid !important;
+        page-break-after: avoid !important;
+      }
+
+      .total-card {
+        border: 1px solid #d0d7de !important;
+        box-shadow: none !important;
+      }
+
+      .total-card.card-final {
+        background: #023a40 !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .footer {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto !important;
+        right: auto !important;
+        margin-top: 20px !important;
+        padding: 10px 0 0 0 !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- Top Floating Action Toolbar -->
   <header class="toolbar no-print">
     <div class="toolbar-brand">
-      <img src="../brand/atlascore_logo.png" alt="Atlascore" style="height: 24px; width: auto;">
+      <img src="../brand/atlascore_logo.png" alt="Atlascore" style="height: 22px; width: auto;">
       <div>Atlascore <span>Budget Builder</span></div>
+      <span class="toolbar-pill">Oficial</span>
     </div>
-    <div class="toolbar-actions">
+
+    <div class="toolbar-controls">
       <div class="toolbar-group">
         <label for="currency-select">Moneda:</label>
         <select id="currency-select" class="toolbar-select" onchange="recalculateTotals()">
@@ -561,26 +1013,52 @@
           <option value="EUR">EUR (€)</option>
         </select>
       </div>
+
       <div class="toolbar-group">
-        <label for="tax-select">IVA:</label>
-        <select id="tax-select" class="toolbar-select" onchange="recalculateTotals()">
-          <option value="21" selected>21%</option>
-          <option value="10.5">10.5%</option>
-          <option value="0">0% (Exento)</option>
+        <label for="payment-method-select">Condición:</label>
+        <select id="payment-method-select" class="toolbar-select" onchange="recalculateTotals()">
+          <option value="BOTH" selected>Mostrar Ambos (Contado vs Cuotas MP)</option>
+          <option value="CONTADO">Solo Contado / Transferencia</option>
+          <option value="MERCADO_PAGO">Solo Mercado Pago (Cuotas)</option>
         </select>
       </div>
-      <button class="btn btn-secondary" onclick="addSection()">+ Sección</button>
-      <button class="btn btn-secondary" onclick="addConditionItem()">+ Condición</button>
-      <button class="btn btn-secondary" onclick="exportJSON()">💾 Guardar JSON</button>
-      <button class="btn btn-secondary" onclick="triggerImportJSON()">📂 Cargar JSON</button>
-      <input type="file" id="import-json-input" style="display:none" accept=".json" onchange="importJSON(event)">
-      <button class="btn btn-primary" onclick="window.print()">🖨️ Exportar PDF / Imprimir</button>
+
+      <div class="toolbar-group">
+        <label for="mp-cuotas-select">Cuotas MP:</label>
+        <select id="mp-cuotas-select" class="toolbar-select" onchange="recalculateTotals()">
+          <option value="3" selected>3 cuotas</option>
+          <option value="6">6 cuotas</option>
+          <option value="9">9 cuotas</option>
+          <option value="12">12 cuotas</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="toolbar-actions">
+      <button class="btn btn-secondary" onclick="addSection()" title="Agregar nueva categoría">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Sección</span>
+      </button>
+      <button class="btn btn-secondary" onclick="addConditionItem()" title="Agregar nueva condición">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        <span>Condición</span>
+      </button>
+      <button class="btn btn-primary btn-save-pdf" onclick="window.print()" title="Imprimir o guardar en PDF">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="12" y1="18" x2="12" y2="12"></line>
+          <line x1="9" y1="15" x2="12" y2="18"></line>
+          <line x1="15" y1="15" x2="12" y2="18"></line>
+        </svg>
+        <span>Guardar PDF</span>
+      </button>
     </div>
   </header>
 
   <!-- Document Page (A4) -->
   <div class="page">
-    
+
     <!-- Presupuesto Header -->
     <header class="header">
       <div class="header-brand">
@@ -593,27 +1071,30 @@
       <div class="header-doc-type">
         <h2>Presupuesto</h2>
         <p class="doc-number">N° <strong contenteditable="true" id="doc-number">ATL-2026-0001</strong></p>
-        <div class="validity" contenteditable="true" id="doc-validity">Valido 30 dias</div>
+        <div class="validity" contenteditable="true" id="doc-validity">Valido 7 dias</div>
       </div>
     </header>
 
-    <!-- Metadata Grid -->
+    <!-- Meta Cards -->
     <div class="meta-grid">
       <div class="meta-card">
         <div class="meta-card-title">Datos del Emisor</div>
         <p><span class="meta-label">Empresa:</span> <strong contenteditable="true">Atlascore S.R.L.</strong></p>
         <p><span class="meta-label">CUIT:</span> <span contenteditable="true">30-71829304-5</span></p>
-        <p><span class="meta-label">Direccion:</span> <span contenteditable="true">Av. Alicia Moreau de Justo 1150, CABA</span></p>
-        <p><span class="meta-label">Telefono:</span> <span contenteditable="true">+54 11 5263-8800</span></p>
-        <p><span class="meta-label">Email:</span> <span contenteditable="true">presupuestos@atlascore.com</span></p>
+        <p><span class="meta-label">Direccion:</span> <span contenteditable="true">Luis Molinari Romero 1324,
+            Córdoba</span></p>
+        <p><span class="meta-label">Telefono:</span> <span contenteditable="true">3513222709</span></p>
+        <p><span class="meta-label">Email:</span> <span contenteditable="true">contacto@atlascore.com.ar</span></p>
       </div>
       <div class="meta-card">
         <div class="meta-card-title">Datos del Cliente</div>
-        <p><span class="meta-label">Empresa:</span> <strong contenteditable="true">[Nombre del Cliente / Empresa]</strong></p>
+        <p><span class="meta-label">Empresa:</span> <strong contenteditable="true">[Nombre del Cliente /
+            Empresa]</strong></p>
         <p><span class="meta-label">CUIT:</span> <span contenteditable="true">[30-XXXXXXX-X]</span></p>
         <p><span class="meta-label">Contacto:</span> <span contenteditable="true">[Nombre del Contacto]</span></p>
         <p><span class="meta-label">Email:</span> <span contenteditable="true">[contacto@cliente.com]</span></p>
-        <p><span class="meta-label">Fecha:</span> <strong contenteditable="true" id="doc-date">30 de septiembre de 2026</strong></p>
+        <p><span class="meta-label">Fecha:</span> <strong contenteditable="true" id="doc-date">30 de septiembre de
+            2026</strong></p>
       </div>
     </div>
 
@@ -634,8 +1115,9 @@
             <tr>
               <th class="col-item">Item / Descripción</th>
               <th class="col-qty">Cant.</th>
-              <th class="col-price">Precio Unit.</th>
-              <th class="col-total">Subtotal</th>
+              <th class="col-price">Precio Unit. (Neto)</th>
+              <th class="col-tax">Impuestos</th>
+              <th class="col-total">Subtotal (Neto)</th>
               <th class="col-actions no-print"></th>
             </tr>
           </thead>
@@ -646,10 +1128,20 @@
                 <div class="item-desc" contenteditable="true">i7-1365U - 16 GB RAM - 512 GB SSD - 15.6" FHD</div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="5" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="5" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="1250.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="1250.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="10.5_2.5" selected>10.5% IVA + 2.5% IIBB</option>
+                  <option value="21_2.5">21% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">10.5% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 6.250,00</span></td>
               <td class="col-actions no-print">
@@ -662,10 +1154,20 @@
                 <div class="item-desc" contenteditable="true">27UK850-W - USB-C - HDR10</div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="5" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="5" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="420.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="420.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="10.5_2.5" selected>10.5% IVA + 2.5% IIBB</option>
+                  <option value="21_2.5">21% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">10.5% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 2.100,00</span></td>
               <td class="col-actions no-print">
@@ -678,10 +1180,20 @@
                 <div class="item-desc" contenteditable="true">24 puertos Gigabit - Gestionable - Rack</div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="1" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="1" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="780.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="780.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+                  <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 780,00</span></td>
               <td class="col-actions no-print">
@@ -707,8 +1219,9 @@
             <tr>
               <th class="col-item">Item / Descripción</th>
               <th class="col-qty">Cant.</th>
-              <th class="col-price">Precio Unit.</th>
-              <th class="col-total">Subtotal</th>
+              <th class="col-price">Precio Unit. (Neto)</th>
+              <th class="col-tax">Impuestos</th>
+              <th class="col-total">Subtotal (Neto)</th>
               <th class="col-actions no-print"></th>
             </tr>
           </thead>
@@ -716,13 +1229,24 @@
             <tr class="item-row">
               <td class="col-item">
                 <div class="item-name" contenteditable="true">Microsoft 365 Business Premium</div>
-                <div class="item-desc" contenteditable="true">Licencia anual por usuario - Exchange + Teams + Office</div>
+                <div class="item-desc" contenteditable="true">Licencia anual por usuario - Exchange + Teams + Office
+                </div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="10" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="10" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="264.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="264.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+                  <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 2.640,00</span></td>
               <td class="col-actions no-print">
@@ -735,10 +1259,20 @@
                 <div class="item-desc" contenteditable="true">Protección avanzada - 1 año - por dispositivo</div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="10" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="10" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="45.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="45.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+                  <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 450,00</span></td>
               <td class="col-actions no-print">
@@ -751,10 +1285,20 @@
                 <div class="item-desc" contenteditable="true">Licencia Enterprise - 1 socket - 1 año soporte</div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="1" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="1" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="1100.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="1100.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+                  <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 1.100,00</span></td>
               <td class="col-actions no-print">
@@ -780,8 +1324,9 @@
             <tr>
               <th class="col-item">Item / Descripción</th>
               <th class="col-qty">Cant.</th>
-              <th class="col-price">Precio Unit.</th>
-              <th class="col-total">Subtotal</th>
+              <th class="col-price">Precio Unit. (Neto)</th>
+              <th class="col-tax">Impuestos</th>
+              <th class="col-total">Subtotal (Neto)</th>
               <th class="col-actions no-print"></th>
             </tr>
           </thead>
@@ -789,13 +1334,24 @@
             <tr class="item-row">
               <td class="col-item">
                 <div class="item-name" contenteditable="true">Diseño e Implementación de Red</div>
-                <div class="item-desc" contenteditable="true">Cableado estructurado Cat. 6A - Rack - Config. switches</div>
+                <div class="item-desc" contenteditable="true">Cableado estructurado Cat. 6A - Rack - Config. switches
+                </div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="1" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="1" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="3200.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="3200.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+                  <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 3.200,00</span></td>
               <td class="col-actions no-print">
@@ -805,13 +1361,24 @@
             <tr class="item-row">
               <td class="col-item">
                 <div class="item-name" contenteditable="true">Migración a Microsoft 365</div>
-                <div class="item-desc" contenteditable="true">Migración de correo, datos y configuración - Capacitación</div>
+                <div class="item-desc" contenteditable="true">Migración de correo, datos y configuración - Capacitación
+                </div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="1" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="1" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="1800.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="1800.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+                  <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 1.800,00</span></td>
               <td class="col-actions no-print">
@@ -821,13 +1388,24 @@
             <tr class="item-row">
               <td class="col-item">
                 <div class="item-name" contenteditable="true">Soporte IT Mensual - Plan Premium</div>
-                <div class="item-desc" contenteditable="true">Monitoreo 24/7 - Help Desk - Mantenimiento preventivo - 3 meses</div>
+                <div class="item-desc" contenteditable="true">Monitoreo 24/7 - Help Desk - Mantenimiento preventivo - 3
+                  meses</div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="3" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="3" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="950.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="950.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+                  <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 2.850,00</span></td>
               <td class="col-actions no-print">
@@ -837,13 +1415,24 @@
             <tr class="item-row">
               <td class="col-item">
                 <div class="item-name" contenteditable="true">Auditoría de Seguridad Informática</div>
-                <div class="item-desc" contenteditable="true">Análisis de vulnerabilidades - Pentesting - Informe ejecutivo</div>
+                <div class="item-desc" contenteditable="true">Análisis de vulnerabilidades - Pentesting - Informe
+                  ejecutivo</div>
               </td>
               <td class="col-qty">
-                <input type="number" class="num-input input-qty" value="1" min="1" step="1" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-qty" value="1" min="1" step="1"
+                  oninput="recalculateTotals()">
               </td>
               <td class="col-price">
-                <input type="number" class="num-input input-price price-input" value="2400.00" min="0" step="0.01" oninput="recalculateTotals()">
+                <input type="number" class="num-input input-price price-input" value="2400.00" min="0" step="0.01"
+                  oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+                  <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 2.400,00</span></td>
               <td class="col-actions no-print">
@@ -857,9 +1446,19 @@
 
     </div>
 
-    <!-- Totals Panel -->
+    <!-- Totals Panel Horizontal -->
     <div class="totals-wrapper">
-      <div class="totals-panel" id="totals-panel">
+      <div class="totals-horizontal" id="totals-panel">
+        <!-- Generated dynamically via JS -->
+      </div>
+    </div>
+
+    <!-- Formas de Pago & Financiación Box -->
+    <div class="payment-methods-box" id="payment-methods-box">
+      <div class="payment-box-header">
+        <h3>Condiciones de Pago &amp; Financiación</h3>
+      </div>
+      <div class="payment-methods-grid" id="payment-methods-grid">
         <!-- Generated dynamically via JS -->
       </div>
     </div>
@@ -867,60 +1466,51 @@
     <!-- Conditions & Observations -->
     <div class="conditions-box">
       <div class="conditions-box-header">
-        <h3>Condiciones &amp; Observaciones</h3>
+        <h3>Condiciones &amp; Observaciones Generales</h3>
       </div>
       <ul id="conditions-list">
         <li>
-          <span class="condition-text" contenteditable="true">Presupuesto válido por 30 (treinta) días corridos desde la fecha de emisión.</span>
+          <span class="condition-text" contenteditable="true">Presupuesto válido por 30 (treinta) días corridos desde la
+            fecha de emisión.</span>
           <button class="btn-danger-sm no-print" onclick="deleteConditionItem(this)">✕</button>
         </li>
         <li>
-          <span class="condition-text" contenteditable="true">Precios expresados en USD. No incluyen IVA salvo indicación expresa.</span>
+          <span class="condition-text" contenteditable="true">Precios finales expresados en la moneda seleccionada. Presupuesto válido por 30 (treinta) días corridos.</span>
           <button class="btn-danger-sm no-print" onclick="deleteConditionItem(this)">✕</button>
         </li>
         <li>
-          <span class="condition-text" contenteditable="true">Forma de pago: 50% al aprobar, 50% contra entrega / finalización.</span>
+          <span class="condition-text" contenteditable="true">Opción Contado / Transferencia: 50% al aprobar, 50% contra
+            entrega / finalización del servicio.</span>
           <button class="btn-danger-sm no-print" onclick="deleteConditionItem(this)">✕</button>
         </li>
         <li>
-          <span class="condition-text" contenteditable="true">Plazo de entrega HW: 10 a 15 días hábiles según disponibilidad de stock.</span>
+          <span class="condition-text" contenteditable="true">Opción Mercado Pago (3+ cuotas): Incluye recargo total del
+            17.09% (6.60% costo por cobro + 10.49% costo por ofrecer cuotas).</span>
           <button class="btn-danger-sm no-print" onclick="deleteConditionItem(this)">✕</button>
         </li>
         <li>
-          <span class="condition-text" contenteditable="true">Servicios incluyen garantía de 90 días sobre mano de obra e implementación.</span>
+          <span class="condition-text" contenteditable="true">Plazo de entrega Hardware: 10 a 15 días hábiles según
+            disponibilidad de stock.</span>
           <button class="btn-danger-sm no-print" onclick="deleteConditionItem(this)">✕</button>
         </li>
         <li>
-          <span class="condition-text" contenteditable="true">Hardware cuenta con garantía oficial del fabricante.</span>
+          <span class="condition-text" contenteditable="true">Servicios incluyen garantía de 90 días sobre mano de obra
+            e implementación.</span>
           <button class="btn-danger-sm no-print" onclick="deleteConditionItem(this)">✕</button>
         </li>
         <li>
-          <span class="condition-text" contenteditable="true">Este presupuesto no constituye factura ni compromiso definitivo de compra.</span>
+          <span class="condition-text" contenteditable="true">Este presupuesto no constituye factura definitiva ni
+            compromiso de compra hasta su aprobación formal.</span>
           <button class="btn-danger-sm no-print" onclick="deleteConditionItem(this)">✕</button>
         </li>
       </ul>
     </div>
 
-    <!-- Signatures -->
-    <div class="signature-zone">
-      <div class="sig-block">
-        <div class="sig-line">
-          <p class="sig-label" contenteditable="true">Por Atlascore S.R.L.</p>
-          <p class="sig-sub" contenteditable="true">Firma y Aclaración</p>
-        </div>
-      </div>
-      <div class="sig-block">
-        <div class="sig-line">
-          <p class="sig-label" contenteditable="true">Por el Cliente</p>
-          <p class="sig-sub" contenteditable="true">Firma, Aclaración y DNI</p>
-        </div>
-      </div>
-    </div>
-
     <!-- Page Footer -->
     <footer class="footer">
       <div class="footer-left">Atlascore - Innovación que Transforma</div>
-      <div class="footer-center"><a href="mailto:info@atlascore.com">info@atlascore.com</a> - <a href="https://atlascore.com">atlascore.com</a></div>
+      <div class="footer-center"><a href="mailto:info@atlascore.com">info@atlascore.com</a> - <a
+          href="https://atlascore.com">atlascore.com</a></div>
       <div class="footer-right">Página 1 de 1</div>
     </footer>
 
@@ -938,79 +1528,182 @@
 
     function recalculateTotals() {
       const currency = document.getElementById('currency-select').value;
-      const taxRate = parseFloat(document.getElementById('tax-select').value) || 0;
-      
+      const paymentMode = document.getElementById('payment-method-select').value;
+      const mpCuotas = parseInt(document.getElementById('mp-cuotas-select').value) || 3;
+
       const sections = document.querySelectorAll('.quote-section');
       const totalsPanel = document.getElementById('totals-panel');
       totalsPanel.innerHTML = '';
 
-      let grandSubtotal = 0;
+      let totalNetoGeneral = 0;
+      let totalIva21General = 0;
+      let totalIva105General = 0;
+      let totalIibbGeneral = 0;
 
       sections.forEach(section => {
-        const titleEl = section.querySelector('.section-title');
-        const sectionTitle = titleEl ? titleEl.textContent.trim() : 'Sección';
         const rows = section.querySelectorAll('.item-row');
-        
-        let sectionTotal = 0;
 
         rows.forEach(row => {
           const qtyInput = row.querySelector('.input-qty');
           const priceInput = row.querySelector('.input-price');
+          const taxSelect = row.querySelector('.tax-select-item');
           const subtotalSpan = row.querySelector('.row-subtotal');
+          const printTaxSpan = row.querySelector('.tax-badge-print');
 
           const qty = parseFloat(qtyInput?.value) || 0;
           const price = parseFloat(priceInput?.value) || 0;
-          const rowSubtotal = qty * price;
-          
-          sectionTotal += rowSubtotal;
+          const rowNeto = qty * price;
+
+          totalNetoGeneral += rowNeto;
 
           if (subtotalSpan) {
-            subtotalSpan.textContent = formatCurrency(rowSubtotal);
+            subtotalSpan.textContent = formatCurrency(rowNeto);
+          }
+
+          // Tax Breakdown per Item: 21%+2.5%, 10.5%+2.5%, or Exento
+          const taxVal = taxSelect ? taxSelect.value : '21_2.5';
+          let printTaxLabel = 'Exento (0%)';
+
+          if (taxVal === '21_2.5') {
+            totalIva21General += rowNeto * 0.21;
+            totalIibbGeneral += rowNeto * 0.025;
+            printTaxLabel = '21% IVA + 2.5% IIBB';
+          } else if (taxVal === '10.5_2.5') {
+            totalIva105General += rowNeto * 0.105;
+            totalIibbGeneral += rowNeto * 0.025;
+            printTaxLabel = '10.5% IVA + 2.5% IIBB';
+          } else {
+            printTaxLabel = 'Exento (0%)';
+          }
+
+          if (printTaxSpan) {
+            printTaxSpan.textContent = printTaxLabel;
           }
         });
-
-        grandSubtotal += sectionTotal;
-
-        // Render Section Subtotal Row
-        const rowDiv = document.createElement('div');
-        rowDiv.className = 'totals-row';
-        rowDiv.innerHTML = `<span class="label">Subtotal ${escapeHTML(sectionTitle)}</span><span class="value">${formatCurrency(sectionTotal)}</span>`;
-        totalsPanel.appendChild(rowDiv);
       });
 
-      // Calculate Tax & Final Total
-      const taxAmount = grandSubtotal * (taxRate / 100);
-      const grandTotal = grandSubtotal + taxAmount;
+      const totalImpuestosGeneral = totalIva21General + totalIva105General + totalIibbGeneral;
+      // Precios finales para presupuesto comercial limpio sin desglose impositivo
+      const totalContadoBase = totalNetoGeneral;
 
-      // Render Tax Row
-      const taxRow = document.createElement('div');
-      taxRow.className = 'totals-row';
-      taxRow.innerHTML = `<span class="label">IVA (${taxRate}%)</span><span class="value">${formatCurrency(taxAmount)}</span>`;
-      totalsPanel.appendChild(taxRow);
+      // Mercado Pago calculation: 6.60% cobro + 10.49% cuotas = 17.09% total surcharge
+      const mpRecargoPorcentaje = 0.1709;
+      const mpMontoRecargo = totalContadoBase * mpRecargoPorcentaje;
+      const totalFinanciadoMP = totalContadoBase + mpMontoRecargo;
+      const montoPorCuotaMP = totalFinanciadoMP / mpCuotas;
 
-      // Render Final Total Row
-      const finalRow = document.createElement('div');
-      finalRow.className = 'totals-row total-final';
-      finalRow.innerHTML = `<span class="label">Total</span><span class="value">${formatCurrency(grandTotal)}</span>`;
-      totalsPanel.appendChild(finalRow);
+      // Render Horizontal Totals Cards
+      let cardsHTML = `
+        <div class="total-card">
+          <div class="total-card-label">Subtotal</div>
+          <div class="total-card-value">${formatCurrency(totalNetoGeneral)}</div>
+          <div class="total-card-sub">Total de ítems presupuestados</div>
+        </div>
+
+        <div class="total-card card-contado">
+          <div class="total-card-label">Total Contado / Transf.</div>
+          <div class="total-card-value">${formatCurrency(totalContadoBase)}</div>
+          <div class="total-card-sub">Efectivo o transferencia bancaria</div>
+        </div>
+      `;
+
+      if (paymentMode === 'MERCADO_PAGO' || paymentMode === 'BOTH') {
+        cardsHTML += `
+          <div class="total-card card-mp">
+            <div class="total-card-label">Mercado Pago (${mpCuotas} Cuotas)</div>
+            <div class="total-card-value">${formatCurrency(totalFinanciadoMP)}</div>
+            <div class="total-card-sub">${mpCuotas} cuotas de <strong>${formatCurrency(montoPorCuotaMP)}</strong></div>
+          </div>
+        `;
+      }
+
+      const finalAmount = paymentMode === 'MERCADO_PAGO' ? totalFinanciadoMP : totalContadoBase;
+      const finalLabel = paymentMode === 'MERCADO_PAGO' ? 'Total Financiado' : 'Total a Pagar';
+      const finalSub = paymentMode === 'MERCADO_PAGO' ? `Plan de ${mpCuotas} cuotas fijas` : 'Importe final presupuestado';
+
+      cardsHTML += `
+        <div class="total-card card-final">
+          <div class="total-card-label">${finalLabel}</div>
+          <div class="total-card-value">${formatCurrency(finalAmount)}</div>
+          <div class="total-card-sub">${finalSub}</div>
+        </div>
+      `;
+
+      totalsPanel.innerHTML = cardsHTML;
+
+      // Render Payment Methods Box on Document
+      renderPaymentMethodsBox(paymentMode, totalContadoBase, totalFinanciadoMP, mpCuotas, montoPorCuotaMP);
+    }
+
+    function renderPaymentMethodsBox(mode, totalContado, totalMP, cuotasNum, valorCuota) {
+      const grid = document.getElementById('payment-methods-grid');
+      const box = document.getElementById('payment-methods-box');
+      if (!grid || !box) return;
+
+      grid.innerHTML = '';
+
+      if (mode === 'CONTADO' || mode === 'BOTH') {
+        const card1 = document.createElement('div');
+        card1.className = 'payment-card payment-contado';
+        card1.innerHTML = `
+          <div class="payment-card-badge">Opción 1 - Efectivo / Transferencia</div>
+          <div class="payment-card-title">1 Pago Contado (Sin Interés)</div>
+          <div class="payment-card-price">${formatCurrency(totalContado)}</div>
+          <div class="payment-card-detail">Pago mediante transferencia bancaria directa o depósito. Importe neto final con impuestos incluidos.</div>
+        `;
+        grid.appendChild(card1);
+      }
+
+      if (mode === 'MERCADO_PAGO' || mode === 'BOTH') {
+        const card2 = document.createElement('div');
+        card2.className = 'payment-card payment-mp';
+        card2.innerHTML = `
+          <div class="payment-card-badge mp-badge">Opción 2 - Mercado Pago (Cuotas)</div>
+          <div class="payment-card-title">Financiación con Mercado Pago</div>
+          <div class="payment-card-price">${formatCurrency(totalMP)}</div>
+          <div class="payment-card-sub">
+            <span><strong>${cuotasNum} cuotas fijas de:</strong></span> <strong>${formatCurrency(valorCuota)}</strong>
+          </div>
+          <div class="payment-card-detail">
+            Costo por cobro (6.60%) + Costo por ofrecer cuotas (10.49%) = <strong>17.09% Recargo Total MP</strong>.
+          </div>
+        `;
+        grid.appendChild(card2);
+      }
+
+      if (mode === 'CONTADO') {
+        grid.style.gridTemplateColumns = '1fr';
+      } else if (mode === 'MERCADO_PAGO') {
+        grid.style.gridTemplateColumns = '1fr';
+      } else {
+        grid.style.gridTemplateColumns = '1fr 1fr';
+      }
     }
 
     function addItemRow(buttonEl) {
       const section = buttonEl.closest('.quote-section');
       const tbody = section.querySelector('tbody');
-      
+
       const tr = document.createElement('tr');
       tr.className = 'item-row';
       tr.innerHTML = `
         <td class="col-item">
           <div class="item-name" contenteditable="true">Nuevo Item</div>
-          <div class="item-desc" contenteditable="true">Descripción del item o servicio</div>
+          <div class="item-desc" contenteditable="true">Descripción del producto o servicio</div>
         </td>
         <td class="col-qty">
           <input type="number" class="num-input input-qty" value="1" min="1" step="1" oninput="recalculateTotals()">
         </td>
         <td class="col-price">
           <input type="number" class="num-input input-price price-input" value="100.00" min="0" step="0.01" oninput="recalculateTotals()">
+        </td>
+        <td class="col-tax">
+          <select class="tax-select-item no-print" onchange="recalculateTotals()">
+            <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+            <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+            <option value="0_0">Exento (0%)</option>
+          </select>
+          <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
         </td>
         <td class="col-total"><span class="row-subtotal">USD 100,00</span></td>
         <td class="col-actions no-print">
@@ -1029,7 +1722,6 @@
 
     function addSection() {
       const container = document.getElementById('sections-container');
-      const sectionId = 'SEC-' + Date.now();
       const div = document.createElement('div');
       div.className = 'quote-section';
       div.innerHTML = `
@@ -1045,8 +1737,9 @@
             <tr>
               <th class="col-item">Item / Descripción</th>
               <th class="col-qty">Cant.</th>
-              <th class="col-price">Precio Unit.</th>
-              <th class="col-total">Subtotal</th>
+              <th class="col-price">Precio Unit. (Neto)</th>
+              <th class="col-tax">Impuestos</th>
+              <th class="col-total">Subtotal (Neto)</th>
               <th class="col-actions no-print"></th>
             </tr>
           </thead>
@@ -1061,6 +1754,14 @@
               </td>
               <td class="col-price">
                 <input type="number" class="num-input input-price price-input" value="500.00" min="0" step="0.01" oninput="recalculateTotals()">
+              </td>
+              <td class="col-tax">
+                <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                  <option value="21_2.5" selected>21% IVA + 2.5% IIBB</option>
+                  <option value="10.5_2.5">10.5% IVA + 2.5% IIBB</option>
+                  <option value="0_0">Exento (0%)</option>
+                </select>
+                <span class="tax-badge tax-badge-print" style="display:none;">21% IVA + 2.5% IIBB</span>
               </td>
               <td class="col-total"><span class="row-subtotal">USD 500,00</span></td>
               <td class="col-actions no-print">
@@ -1099,7 +1800,7 @@
     }
 
     function escapeHTML(str) {
-      return str.replace(/[&<>'"]/g, 
+      return str.replace(/[&<>'"]/g,
         tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
       );
     }
@@ -1111,7 +1812,8 @@
         validity: document.getElementById('doc-validity').textContent.trim(),
         date: document.getElementById('doc-date').textContent.trim(),
         currency: document.getElementById('currency-select').value,
-        taxRate: document.getElementById('tax-select').value,
+        paymentMode: document.getElementById('payment-method-select').value,
+        mpCuotas: document.getElementById('mp-cuotas-select').value,
         sections: []
       };
 
@@ -1125,7 +1827,8 @@
             name: row.querySelector('.item-name')?.textContent.trim() || '',
             desc: row.querySelector('.item-desc')?.textContent.trim() || '',
             qty: parseFloat(row.querySelector('.input-qty')?.value) || 0,
-            price: parseFloat(row.querySelector('.input-price')?.value) || 0
+            price: parseFloat(row.querySelector('.input-price')?.value) || 0,
+            tax: row.querySelector('.tax-select-item')?.value || '21_2.5'
           });
         });
 
@@ -1156,14 +1859,15 @@
       if (!file) return;
 
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         try {
           const data = JSON.parse(e.target.result);
           if (data.docNumber) document.getElementById('doc-number').textContent = data.docNumber;
           if (data.validity) document.getElementById('doc-validity').textContent = data.validity;
           if (data.date) document.getElementById('doc-date').textContent = data.date;
           if (data.currency) document.getElementById('currency-select').value = data.currency;
-          if (data.taxRate) document.getElementById('tax-select').value = data.taxRate;
+          if (data.paymentMode) document.getElementById('payment-method-select').value = data.paymentMode;
+          if (data.mpCuotas) document.getElementById('mp-cuotas-select').value = data.mpCuotas;
 
           if (data.sections && Array.isArray(data.sections)) {
             const container = document.getElementById('sections-container');
@@ -1174,6 +1878,7 @@
               div.className = 'quote-section';
               let rowsHTML = '';
               sec.items.forEach(item => {
+                const taxVal = (item.tax === '10.5_2.5' || item.tax === '0_0') ? item.tax : '21_2.5';
                 rowsHTML += `
                   <tr class="item-row">
                     <td class="col-item">
@@ -1185,6 +1890,14 @@
                     </td>
                     <td class="col-price">
                       <input type="number" class="num-input input-price price-input" value="${item.price}" min="0" step="0.01" oninput="recalculateTotals()">
+                    </td>
+                    <td class="col-tax">
+                      <select class="tax-select-item no-print" onchange="recalculateTotals()">
+                        <option value="21_2.5" ${taxVal === '21_2.5' ? 'selected' : ''}>21% IVA + 2.5% IIBB</option>
+                        <option value="10.5_2.5" ${taxVal === '10.5_2.5' ? 'selected' : ''}>10.5% IVA + 2.5% IIBB</option>
+                        <option value="0_0" ${taxVal === '0_0' ? 'selected' : ''}>Exento (0%)</option>
+                      </select>
+                      <span class="tax-badge tax-badge-print" style="display:none;"></span>
                     </td>
                     <td class="col-total"><span class="row-subtotal"></span></td>
                     <td class="col-actions no-print">
@@ -1207,8 +1920,9 @@
                     <tr>
                       <th class="col-item">Item / Descripción</th>
                       <th class="col-qty">Cant.</th>
-                      <th class="col-price">Precio Unit.</th>
-                      <th class="col-total">Subtotal</th>
+                      <th class="col-price">Precio Unit. (Neto)</th>
+                      <th class="col-tax">Impuestos</th>
+                      <th class="col-total">Subtotal (Neto)</th>
                       <th class="col-actions no-print"></th>
                     </tr>
                   </thead>
@@ -1246,9 +1960,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       recalculateTotals();
     });
-    // In case DOM is already loaded
     recalculateTotals();
   </script>
 
 </body>
+
 </html>
