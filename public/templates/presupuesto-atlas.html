@@ -1583,8 +1583,8 @@
       });
 
       const totalImpuestosGeneral = totalIva21General + totalIva105General + totalIibbGeneral;
-      // Precios finales para presupuesto comercial limpio sin desglose impositivo
-      const totalContadoBase = totalNetoGeneral;
+      // Precios finales: neto + impuestos (sin desglose visible en PDF)
+      const totalContadoBase = totalNetoGeneral + totalImpuestosGeneral;
 
       // Mercado Pago calculation: 6.60% cobro + 10.49% cuotas = 17.09% total surcharge
       const mpRecargoPorcentaje = 0.1709;
